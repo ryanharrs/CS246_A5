@@ -54,15 +54,15 @@ void init(string blockType){
 	if(blockType == "J"){
 		vector<Cell> row1;
 		vector<Cell> row2;
-			Cell cell1(0,0, 'J');
-			Cell cell2(0,1);
-			Cell cell3(0,2);
+			Cell cell1(0,3, 'J');
+			Cell cell2(0,4);
+			Cell cell3(0,5);
 			row1.emplace_back(cell1);
 			row1.emplace_back(cell2);
 			row1.emplace_back(cell3);
-			Cell cell4(1,0, 'J');
-			Cell cell5(1,1, 'J');
-			Cell cell6(1,2, 'J');
+			Cell cell4(1,3, 'J');
+			Cell cell5(1,4, 'J');
+			Cell cell6(1,5, 'J');
 			row2.emplace_back(cell4);
 			row2.emplace_back(cell5);
 			row2.emplace_back(cell6);
@@ -72,15 +72,15 @@ void init(string blockType){
 	if(blockType == "L"){
 		vector<Cell> row1;
 		vector<Cell> row2;
-			Cell cell1(0,2, 'L');
-			Cell cell2(0,1);
-			Cell cell3(0,0);
+			Cell cell1(0,5, 'L');
+			Cell cell2(0,4);
+			Cell cell3(0,3);
 			row1.emplace_back(cell3);
 			row1.emplace_back(cell2);
 			row1.emplace_back(cell1);
-			Cell cell4(1,0, 'L');
-			Cell cell5(1,1, 'L');
-			Cell cell6(1,2, 'L');
+			Cell cell4(1,3, 'L');
+			Cell cell5(1,4, 'L');
+			Cell cell6(1,5, 'L');
 			row2.emplace_back(cell4);
 			row2.emplace_back(cell5);
 			row2.emplace_back(cell6);
@@ -90,12 +90,12 @@ void init(string blockType){
 	if(blockType == "O"){
 		vector<Cell> row1;
 		vector<Cell> row2;
-			Cell cell1(0,0, 'O');
-			Cell cell2(0,1, 'O');
+			Cell cell1(0,3, 'O');
+			Cell cell2(0,4, 'O');
 			row1.emplace_back(cell1);
 			row1.emplace_back(cell2);
-			Cell cell4(1,0, 'O');
-			Cell cell5(1,1, 'O');
+			Cell cell4(1,3, 'O');
+			Cell cell5(1,4, 'O');
 			row2.emplace_back(cell4);
 			row2.emplace_back(cell5);
 		newBlockGrid->emplace_back(row1);
@@ -104,15 +104,15 @@ void init(string blockType){
 	if(blockType == "S"){
 		vector<Cell> row1;
 		vector<Cell> row2;
-			Cell cell1(0,0);
-			Cell cell2(0,1, 'S');
-			Cell cell3(0,2, 'S');
+			Cell cell1(0,3);
+			Cell cell2(0,4, 'S');
+			Cell cell3(0,5, 'S');
 			row1.emplace_back(cell1);
 			row1.emplace_back(cell2);
 			row1.emplace_back(cell3);
-			Cell cell4(1,0, 'S');
-			Cell cell5(1,1, 'S');
-			Cell cell6(1,2);
+			Cell cell4(1,3, 'S');
+			Cell cell5(1,4, 'S');
+			Cell cell6(1,5);
 			row2.emplace_back(cell4);
 			row2.emplace_back(cell5);
 			row2.emplace_back(cell6);
@@ -122,15 +122,15 @@ void init(string blockType){
 	if(blockType == "Z"){
 		vector<Cell> row1;
 		vector<Cell> row2;
-			Cell cell1(0,0, 'Z');
-			Cell cell2(0,1, 'Z');
-			Cell cell3(0,2);
+			Cell cell1(0,3, 'Z');
+			Cell cell2(0,4, 'Z');
+			Cell cell3(0,5);
 			row1.emplace_back(cell1);
 			row1.emplace_back(cell2);
 			row1.emplace_back(cell3);
-			Cell cell4(1,0);
-			Cell cell5(1,1, 'J');
-			Cell cell6(1,2, 'J');
+			Cell cell4(1,3);
+			Cell cell5(1,4, 'J');
+			Cell cell6(1,5, 'J');
 			row2.emplace_back(cell4);
 			row2.emplace_back(cell5);
 			row2.emplace_back(cell6);
@@ -140,15 +140,15 @@ void init(string blockType){
 	if(blockType == "T"){
 		vector<Cell> row1;
 		vector<Cell> row2;
-			Cell cell1(0,0, 'T');
-			Cell cell2(0,1, 'T');
-			Cell cell3(0,2, 'T');
+			Cell cell1(0,3, 'T');
+			Cell cell2(0,4, 'T');
+			Cell cell3(0,5, 'T');
 			row1.emplace_back(cell1);
 			row1.emplace_back(cell2);
 			row1.emplace_back(cell3);
-			Cell cell4(1,0);
-			Cell cell5(1,1, 'J');
-			Cell cell6(1,2);
+			Cell cell4(1,3);
+			Cell cell5(1,4, 'J');
+			Cell cell6(1,5);
 			row2.emplace_back(cell4);
 			row2.emplace_back(cell5);
 			row2.emplace_back(cell6);
