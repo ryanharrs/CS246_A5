@@ -1,7 +1,8 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 #include <vector>
-
+#include <string>
+#include <iostream>
 template <typename InfoType, typename StateType> class Observer;
 
 class Block: public Subject<Info, State>{
