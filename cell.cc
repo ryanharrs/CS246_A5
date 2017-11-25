@@ -6,6 +6,8 @@
 #include <iostream>
 using namespace std;
 
+Cell::Cell(size_t r, size_t c, char blockType): r{r}, c{c}, blockType{blockType}, colour{Colour::None}{}
+
 Cell::Cell(size_t r, size_t c): r{r}, c{c}, colour{Colour::None}{}
 
 void Cell::setPiece(Colour newColour){

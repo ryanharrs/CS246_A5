@@ -3,11 +3,12 @@
 #include <vector>
 
 class Block{
-	std::vector<std::vector<Cell>> theGrid;
+	std::vector<std::vector<Cell>> *blockGrid;
 	Observer<Info, State> *ob = nullptr;
 	public:
-	void rotate();
-	void init(char b);
+	void clockwiseRotate();
+	void counterClockwiseRotate();
+	void init(char blockType);
 	bool canPlace();
 	~Block();
 
