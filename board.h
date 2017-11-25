@@ -15,7 +15,7 @@ template <typename InfoType, typename StateType> class Observer;
 class InvalidMove{};
 
 class Board {
-  std::vector<std::vector<Block>> theBoard;  // The actual grid.
+  std::vector<std::vector<Cell>> theBoard;  // The actual grid.
   TextDisplay *td = nullptr; // The text display.
   Observer<Info, State> *ob = nullptr;  // Another observer (intent:  graphics)
   // Add private members, if necessary.

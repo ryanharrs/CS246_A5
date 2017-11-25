@@ -26,11 +26,11 @@ void Board::init(){
   delete td;
   td = new TextDisplay;
   for (int row = 0; row < 18; row++) {
-    vector<Block> theRow;
+    vector<Cell> theRow;
     for (int column = 0; column < 11; column++) {
-      Block bc{row, column};
-      bc.attach(td);
-      theRow.emplace_back(bc);
+      Cell newCell{row, column};
+      newCell.attach(td);
+      theRow.emplace_back(newCell);
     }
     theBoard.emplace_back(theRow);
   }
