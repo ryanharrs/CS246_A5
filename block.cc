@@ -20,6 +20,9 @@ void Block::clockwiseRotate(){
 	}
 	delete theGrid;
 	theGrid = newBlockGrid;
+	int tempWidth = width;
+	width = height;	
+	height = tempWidth;
 	notifyObservers();
 }
 
@@ -37,10 +40,15 @@ void Block::counterClockwiseRotate(){
 	}
 	delete theGrid;
 	theGrid = newBlockGrid;
+	int tempWidth = width;
+	width = height;	
+	height = tempWidth;
 	notifyObservers();
 }
 
 void init(string blockType){
+	x = 0;
+	y = 3;
 	delete blockGrid;
 	vector<vector<Cell>> *newBlockGrid;
 	if(blockType == "I"){
@@ -50,6 +58,8 @@ void init(string blockType){
 			row.emplace_back(newCell);
 		}
 		newBlockGrid->emplace_back(row);
+		height = 1;
+		width = 4;
 	}
 	if(blockType == "J"){
 		vector<Cell> row1;
@@ -68,6 +78,8 @@ void init(string blockType){
 			row2.emplace_back(cell6);
 		newBlockGrid->emplace_back(row1);
 		newBlockGrid->emplace_back(row2);
+		height = 2;
+		width = 3;
 	}
 	if(blockType == "L"){
 		vector<Cell> row1;
@@ -86,6 +98,8 @@ void init(string blockType){
 			row2.emplace_back(cell6);
 		newBlockGrid->emplace_back(row1);
 		newBlockGrid->emplace_back(row2);
+		height = 2;
+		width = 3;
 	}
 	if(blockType == "O"){
 		vector<Cell> row1;
@@ -100,6 +114,8 @@ void init(string blockType){
 			row2.emplace_back(cell5);
 		newBlockGrid->emplace_back(row1);
 		newBlockGrid->emplace_back(row2);
+		height = 2;
+		width = 2;
 	}
 	if(blockType == "S"){
 		vector<Cell> row1;
@@ -118,6 +134,8 @@ void init(string blockType){
 			row2.emplace_back(cell6);
 		newBlockGrid->emplace_back(row1);
 		newBlockGrid->emplace_back(row2);
+		height = 2;
+		width = 3;
 	}
 	if(blockType == "Z"){
 		vector<Cell> row1;
@@ -136,6 +154,8 @@ void init(string blockType){
 			row2.emplace_back(cell6);
 		newBlockGrid->emplace_back(row1);
 		newBlockGrid->emplace_back(row2);
+		height = 2;
+		width = 3;
 	}
 	if(blockType == "T"){
 		vector<Cell> row1;
@@ -154,6 +174,8 @@ void init(string blockType){
 			row2.emplace_back(cell6);
 		newBlockGrid->emplace_back(row1);
 		newBlockGrid->emplace_back(row2);
+		height = 2;
+		width = 3;
 	}
 	
 	blockGrid = newBlockGrid;
