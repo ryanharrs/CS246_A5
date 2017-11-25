@@ -4,6 +4,7 @@
 #include <vector>
 #include <cstddef>
 #include "cell.h"
+#include "block.h"
 #include "state.h"
 #include "info.h"
 #include "textdisplay.h"
@@ -22,7 +23,6 @@ class Board {
   GraphicsDisplay *gd = nullptr;
   public:
   ~Board();
-  
   void setObserver(Observer<Info, State> *setob);
   bool isFull() const;  // Is the game over, i.e., is the grid full?
   Colour whoWon() const; // Who has more pieces when the board is full?

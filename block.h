@@ -12,7 +12,5 @@ class Block: public Subject<Info, State>{
 	void init(string blockType);
 	bool canPlace();
 	~Block();
-
-
 }
 

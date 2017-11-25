@@ -52,7 +52,7 @@ void Board::init(){
     }
 }
 
-void Board::setPiece(size_t r, size_t c, Colour colour){
+void Board::setPiece(Block &b){
   
 }
 
