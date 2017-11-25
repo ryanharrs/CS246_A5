@@ -4,12 +4,9 @@
 
 template <typename InfoType, typename StateType> class Observer;
 
-class Block{
+class Block: public Subject<Info, State>{
 	std::vector<std::vector<Cell>> *blockGrid;
- 	std::vector<Observer<InfoType, StateType>*> observers;
-	public:
-	void attach(Observer<InfoType, StateType> *o);
-	void notifyObservers();
+ 	public:
 	void clockwiseRotate();
 	void counterClockwiseRotate();
 	void init(string blockType);

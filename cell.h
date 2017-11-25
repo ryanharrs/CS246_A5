@@ -8,8 +8,9 @@
 
 class Cell : public Subject<Info, State>, public Observer<Info, State> {
   const size_t r, c;
+   char blockType;
   Colour colour = Colour::None;
-  char blockType;
+ 
   // Add other private members if necessary
 
  public:
