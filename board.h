@@ -1,5 +1,5 @@
-#ifndef GRID_H
-#define GRID_H
+#ifndef __BOARD_H__
+#define __BOARD_H__
 #include <iostream>
 #include <vector>
 #include <cstddef>
@@ -14,14 +14,14 @@ class TextDisplay;
 template <typename InfoType, typename StateType> class Observer;
 class InvalidMove{};
 
-class Grid {
-  std::vector<std::vector<Cell>> theGrid;  // The actual grid.
+class Board {
+  std::vector<std::vector<Block>> theBoard;  // The actual grid.
   TextDisplay *td = nullptr; // The text display.
   Observer<Info, State> *ob = nullptr;  // Another observer (intent:  graphics)
   // Add private members, if necessary.
   GraphicsDisplay *gd = nullptr;
   public:
-  ~Grid();
+  ~Board();
   
   void setObserver(Observer<Info, State> *setob);
   bool isFull() const;  // Is the game over, i.e., is the grid full?
@@ -30,7 +30,7 @@ class Grid {
   void setPiece(size_t r, size_t c, Colour colour);  // Plays piece at row r, col c.
   void toggle(size_t r, size_t c);  // Flips piece at row r, col c.
 
-  friend std::ostream &operator<<(std::ostream &out, const Grid &g);
+  friend std::ostream &operator<<(std::ostream &out, const Board &b);
 };
 
 #endif
