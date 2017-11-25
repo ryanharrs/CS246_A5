@@ -5,10 +5,10 @@
 #include "info.h"
 using namespace std;
 
-TextDisplay::TextDisplay() {
+TextDisplay::TextDisplay():gridSize{18} {
 	theDisplay.clear();
 	for(int row = 0; row < 15; row++){
-		vector<char>theRow;
+		vector<char>newRow;
 		for(int column = 0; column < 11; column++){
 				newRow.emplace_back(' ');
 		}
@@ -24,7 +24,7 @@ void TextDisplay::notify(Subject<Info, State> &whoNotified){
 
 ostream &operator<<(ostream &out, const TextDisplay &td){
 	out << "-----------" << endl;
-	for(int  = 0; i < td.gridSize; i ++){
+	for(int i = 0; i < td.gridSize; i ++){
 		for(int j = 0 ;j < td.gridSize; j++){
 			cout<<td.theDisplay[i][j];
 		}

@@ -130,7 +130,7 @@ void Cell::notify(Subject<Info, State> &whoFrom){
 }
 
 Info Cell::getInfo()const{
-	Info thisInfo{r,c,colour};
+	Info thisInfo{r,c,colour, blockType};
 	return thisInfo;	
 }
 
