@@ -7,6 +7,16 @@ Block::~Block{
 
 }
 
+template <typename InfoType, typename StateType>
+void Block::attach(Observer<InfoType, StateType> *o) {
+  observers.emplace_back(o);
+}
+
+template <typename InfoType, typename StateType>
+void Block::notifyObservers() {
+  for (auto &ob : observers) ob->notify(*this);
+}
+
 
 void Block::clockwiseRotate(){
 	vector<vector<Cell>> *newBlockGrid;
@@ -21,6 +31,7 @@ void Block::clockwiseRotate(){
 	}
 	delete theGrid;
 	theGrid = newBlockGrid;
+	notifyObservers();
 }
 
 
@@ -37,7 +48,7 @@ void Block::counterClockwiseRotate(){
 	}
 	delete theGrid;
 	theGrid = newBlockGrid;
-	
+	notifyObservers();
 }
 
 void init(string blockType){
