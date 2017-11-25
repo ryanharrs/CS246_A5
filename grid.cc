@@ -72,42 +72,6 @@ void Grid::init(size_t n){
 		}
 		theGrid.emplace_back(newRow);	
 	}
-	
-	for(int i = 0; i < x; i++){
-		for(int j = 0; j < x; j++){
-			if(i > 0 ){
-			theGrid[i][j].attach(&theGrid[i-1][j]);
-			}
-			if(i < x - 1){
-			theGrid[i][j].attach(&theGrid[i +1][j]);
-			}		
-			if(i > 0 && j < x - 1){
-			theGrid[i][j].attach(&theGrid[i-1][j + 1]);
-			}
-			if(i > 0 && j > 0){
-			theGrid[i][j].attach(&theGrid[i-1][j - 1]);
-			}
-			if(i < x - 1 && j < x-1){
-			theGrid[i][j].attach(&theGrid[i+1][j+1]);
-			}
-			if(i < x -1 && j > 0){
-			theGrid[i][j].attach(&theGrid[i+1][j-1]);
-			}
-			if( j > 0){
-			theGrid[i][j].attach(&theGrid[i][j-1]);
-			}
-			if(j < x - 1){
-			theGrid[i][j].attach(&theGrid[i][j + 1]);
-			}
-		}
-	}
-	int z = x/2 - 1; 
-	
-	theGrid[z][z].setPiece(Colour::Black);
-	theGrid[z][z+1].setPiece(Colour::White);
-	theGrid[z+1][z].setPiece(Colour::White);
-	theGrid[z+1][z+1].setPiece(Colour::Black);
-
 }
 
 void Grid::setPiece(size_t r, size_t c, Colour colour){
