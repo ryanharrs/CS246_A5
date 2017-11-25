@@ -61,6 +61,7 @@ void Board::toggle(size_t r, size_t c){
 
 std::ostream &operator<<(std::ostream &out, const Board &b){
   out << td;
+  return out;
 }
 
 
