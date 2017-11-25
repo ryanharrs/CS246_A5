@@ -1,21 +1,16 @@
 #include <iostream>
 #include <string>
 // You may include other allowed headers, as needed
-//#include "board.h"
+#include "board.h"
 #include "state.h"
 #include "graphicsdisplay.h"
 #include <fstream>
 #include <cstdlib>
 #include <vector>
-
+#include "block.h"
 using namespace std;
 
 // Do not remove any code; do not add code other than where indicated.
-class Block{
-     public:
-	string s;
-	Block(string s): s{s} {}
-};
 
 int main(int argc, char *argv[]) {
 
@@ -30,8 +25,8 @@ int main(int argc, char *argv[]) {
   
 
   bool random = 1;
-//  Board gameBoard;
-//  gameBoard.init();
+  Board gameBoard;
+  gameBoard.init();
 
   vector <string> cmds; 
   string a [16]= {"left", "right", "down", "clockwise", "counterclockwise", "drop", "levelup", "leveldown", "norandom", "random", "sequence", "I", "J", "L", "restart", "hint"};
@@ -88,43 +83,42 @@ int main(int argc, char *argv[]) {
 	continue;
     }
     //Getting a block b
-    Block *b;
+    Block b;
     if ((level==0)||!random){
         if(f >> block){
-        	b = new Block(block);
+        	b.init(block);
 	} else {
 		break;
 	}
     } else if (level==1){
 	int r = rand() % 12 + 1;
-	if (r==1){b = new Block("S"); }
-	else if (r==2){b = new Block("Z");}
-	else if ((r==3)||(r==4)) {b = new Block("T");}
-	else if ((r==5)||(r==6)) {b = new Block("I");}
-   	else if ((r==7)||(r==8)) {b = new Block("J"); }
-	else if ((r==9)||(r==10)) {b = new Block("L");}
-	else {b = new Block("O");}
+	if (r==1){b.init("S"); }
+	else if (r==2){b.init("Z");}
+	else if ((r==3)||(r==4)) {b.init("T");}
+	else if ((r==5)||(r==6)) {b.init("I");}
+   	else if ((r==7)||(r==8)) {b.init("J"); }
+	else if ((r==9)||(r==10)) {b.init("L");}
+	else {b.init("O");}
     } else if (level==2){
 	int r = rand() % 7 + 1;
-        if (r==1) {b = new Block("S"); }
-        else if (r==2) {b = new Block("Z");}
-        else if (r==3) {b = new Block("T");}
-        else if (r==4) {b = new Block("I");}
-        else if (r==5) {b = new Block("J"); }
-        else if (r==6) {b = new Block("L");}
-        else {b = new Block("O");}
+        if (r==1) {b.init("S"); }
+        else if (r==2) {b.init("Z");}
+        else if (r==3) {b.init("T");}
+        else if (r==4) {b.init("I");}
+        else if (r==5) {b.init("J"); }
+        else if (r==6) {b.init("L");}
+        else {b.init("O");}
     } else {
         int r = rand() % 9 + 1;
-        if ((r==1)||(r==2)){b = new Block("S"); }
-        else if ((r==3)||(r==4)) {b = new Block("Z");}
-        else if (r==5) {b = new Block("T");}
-        else if (r==6) {b = new Block("I");}
-        else if (r==7) {b = new Block("J"); }
-        else if (r==8) {b = new Block("L");}
-        else {b = new Block("O");}
+        if ((r==1)||(r==2)){b.init("S"); }
+        else if ((r==3)||(r==4)) {b.init("Z");}
+        else if (r==5) {b.init("T");}
+        else if (r==6) {b.init("I");}
+        else if (r==7) {b.init("J"); }
+        else if (r==8) {b.init("L");}
+        else {b.init("O");}
     }
     
-    cout << b->s << endl;
 //"Play" Commands (in the game - require a new block)
     if (cmd == "left") {
 	cout << cmd << endl;

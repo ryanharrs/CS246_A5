@@ -23,8 +23,10 @@ Colour Board::whoWon() const{
 
 void Board::init(){
   theBoard.clear();
+  int size = 11;
   delete td;
-  td = new TextDisplay;
+  td = new TextDisplay();
+  gd = new GraphicsDisplay(11, 800);
   for (int row = 0; row < 18; row++) {
     vector<Cell> theRow;
     for (int column = 0; column < 11; column++) {
@@ -34,33 +36,32 @@ void Board::init(){
     }
     theBoard.emplace_back(theRow);
   }
-  for (int row = 0; row < 18; row++) {
-    for (int column = 0; column < 11; column++) {
-            if ((row-1) >= 0) {
-                if ((column-1) >=0) theBoard[row][column].attach(&theBoard[row-1][column-1]);
-                theBoard[row][column].attach(&theBoard[row-1][column]);
-                if ((column+1) < size) theBoard[row][column].attach(&theBoard[row-1][column+1]);
-            }
-            if ((row+1) < size) {
-                if ((column-1) >=0) theBoard[row][column].attach(&theBoard[row+1][column-1]);
-                theBoard[row][column].attach(&theBoard[row+1][column]);
-                if ((column+1) < size) theBoard[row][column].attach(&theBoard[row+1][column+1]);
-                }
-                if ((column-1) >=0) theBoard[row][column].attach(&theBoard[row][column-1]);
-                if ((column+1) < size) theBoard[row][column].attach(&theBoard[row][column+1]);
-            }
-    }
+ 
+  
+}
+void Board::setPiece(Block &b){
+  draw(b);
+	
 }
 
-void Board::setPiece(Block &b){
-  
+void Board::draw(Block &b){
+	for(int i = 0; i < b.height; i++){
+		for(int j = 0; j < b.width; j++){
+			theBoard[i+b.x][j+b.y].toggle(b.blockGrid[i][j].getInfo().blockType);
+		}
+	}
+}
+
+void Board::erase(Block &b){
+
+
 }
 
 void Board::toggle(size_t r, size_t c){
 }
 
 std::ostream &operator<<(std::ostream &out, const Board &b){
-  out << td;
+  out << *b.td;
   return out;
 }
 

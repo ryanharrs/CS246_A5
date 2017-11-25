@@ -24,12 +24,12 @@ void TextDisplay::notify(Subject<Info, State> &whoNotified){
 
 ostream &operator<<(ostream &out, const TextDisplay &td){
 	out << "-----------" << endl;
-	for(int i = 0; i < td.gridSize; i ++){
-		for(int j = 0 ;j < td.gridSize; j++){
-			cout<<td.theDisplay[i][j];
+		for(int i = 0; i < 11; i++){
+			for(int j = 0; j < 16; j++){
+				cout<<theDisplay[i][j];
 		}
 		cout<<endl;
-	}
+		}
 	out << "-----------" << endl;
 	return out;	
 }

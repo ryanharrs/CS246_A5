@@ -26,8 +26,10 @@ class Board {
   void setObserver(Observer<Info, State> *setob);
   bool isFull() const;  // Is the game over, i.e., is the grid full?
   Colour whoWon() const; // Who has more pieces when the board is full?
-  void init(size_t n); // Sets up an n x n grid.  Clears old grid, if necessary.
-  void setPiece(size_t r, size_t c, Colour colour);  // Plays piece at row r, col c.
+  void init(); // Sets up an n x n grid.  Clears old grid, if necessary.
+  void setPiece(Block &b);  //
+  void draw(Block &b);
+  void erase(Block &b);
   void toggle(size_t r, size_t c);  // Flips piece at row r, col c.
 
   friend std::ostream &operator<<(std::ostream &out, const Board &b);

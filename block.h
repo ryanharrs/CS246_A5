@@ -13,16 +13,16 @@ template <typename InfoType, typename StateType> class Observer;
 class Block: public Subject<Info, State>{
 	
  	public:
-	int x = 0;
-	int y = 0;
-	int height = 0;
-	int width = 0;
-	std::vector<std::vector<Cell>> *blockGrid;
+	int x,y,width,height;
+	std::string blockType;
+	std::vector<std::vector<Cell>> blockGrid;
 	void clockwiseRotate();
 	void counterClockwiseRotate();
-	void init(std::string blockType);
+	void init(std::string bt);
 	bool canPlace();
 	~Block();
+	Info getInfo() const override;
+
 };
 
 #endif

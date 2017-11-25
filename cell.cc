@@ -80,53 +80,12 @@ Direction reverseDirection(Direction curr){
 
 }
 
-void Cell::toggle(){
-	if(colour == Colour::Black){
-		colour = Colour::White;
-	}
-	else{
-		colour = Colour::Black;
-	}
+void Cell::toggle(char bt){
+	blockType = bt;	
 }
 
 void Cell::notify(Subject<Info, State> &whoFrom){
 	
-  	if(whoFrom.getState().type == StateType::NewPiece){
-		if(colour != whoFrom.getState().colour && colour != Colour::None){
-			State newState{StateType::Relay, colour, directionFinder(r,c,whoFrom.getInfo().row, whoFrom.getInfo().col)};
-			setState(newState);
-			notifyObservers();
-
-		}
-
-	}
-  	else if(whoFrom.getState().type == StateType::Relay){
-		Direction curr = directionFinder(r,c,whoFrom.getInfo().row, whoFrom.getInfo().col);
-		if(curr == whoFrom.getState().direction){
-			
-			if(colour != whoFrom.getState().colour && colour != Colour::None){
-				State newState{StateType::Reply, colour, reverseDirection(curr)};
-				setState(newState);
-				notifyObservers();
-			}
-	 		else if(colour == whoFrom.getState().colour){
-				State newState{StateType::Relay, colour, curr};
-				setState(newState);
-				notifyObservers();
-			}
-	
-		}
-	}
-  	else{
-		Direction curr = directionFinder(r, c,whoFrom.getInfo().row, whoFrom.getInfo().col);
-		if(colour != whoFrom.getState().colour && curr == whoFrom.getState().direction){
-			State newState{StateType::Reply, whoFrom.getState().colour, curr};
-			setState(newState);
-			toggle();
-			notifyObservers();
-		} 
-
-	}
 }
 
 Info Cell::getInfo()const{

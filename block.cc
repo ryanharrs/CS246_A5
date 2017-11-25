@@ -7,56 +7,29 @@ Block::~Block(){
 }
 
 void Block::clockwiseRotate(){
-	vector<vector<Cell>> *newBlockGrid;
-	int size = blockGrid->size() - 1;
-	
-	for(int j = 0; j < blockGrid[0].size(); j++){
-		vector<Cell> row;
-		for(int i =size; i >= 0; i--){
-			row.emplace_back(blockGrid[i][j]);
-		}
-		newBlockGrid->emplace_back(row);
 	}
-	delete blockGrid;
-	blockGrid = newBlockGrid;
-	int tempWidth = width;
-	width = height;	
-	height = tempWidth;
-	notifyObservers();
-}
 
+Info Block::getInfo()const{
+	Info thisInfo{0,0, Colour::None, blockType[0]};
+	return thisInfo;	
+}
 
 void Block::counterClockwiseRotate(){
-	vector<vector<Cell>> *newBlockGrid;
-	int size = blockGrid->size() - 1;
 	
-	for(int j = size; j>=0; j--){
-		vector<Cell> row;
-		for(int i = 0; i < blockGrid->size(); i++){
-			row.emplace_back(blockGrid[i][j]);
-		}
-		newBlockGrid->emplace_back(row);
-	}
-	delete blockGrid;
-	blockGrid = newBlockGrid;
-	int tempWidth = width;
-	width = height;	
-	height = tempWidth;
-	notifyObservers();
 }
 
-void Block::init(string blockType){
+void Block::init(string bt){
 	x = 0;
 	y = 3;
-	delete blockGrid;
-	vector<vector<Cell>> *newBlockGrid;
+	blockType = bt;
+	blockGrid.clear();
 	if(blockType == "I"){
 		vector<Cell> row;
 		for(int i = 0; i < 4;){
-			Cell newCell(0,i, 'I');
+			Cell newCell{0,i, 'I'};
 			row.emplace_back(newCell);
 		}
-		newBlockGrid->emplace_back(row);
+		blockGrid.emplace_back(row);
 		height = 1;
 		width = 4;
 	}
@@ -75,8 +48,8 @@ void Block::init(string blockType){
 			row2.emplace_back(cell4);
 			row2.emplace_back(cell5);
 			row2.emplace_back(cell6);
-		newBlockGrid->emplace_back(row1);
-		newBlockGrid->emplace_back(row2);
+		blockGrid.emplace_back(row1);
+		blockGrid.emplace_back(row2);
 		height = 2;
 		width = 3;
 	}
@@ -95,8 +68,8 @@ void Block::init(string blockType){
 			row2.emplace_back(cell4);
 			row2.emplace_back(cell5);
 			row2.emplace_back(cell6);
-		newBlockGrid->emplace_back(row1);
-		newBlockGrid->emplace_back(row2);
+		blockGrid.emplace_back(row1);
+		blockGrid.emplace_back(row2);
 		height = 2;
 		width = 3;
 	}
@@ -111,8 +84,8 @@ void Block::init(string blockType){
 			Cell cell5{1,4, 'O'};
 			row2.emplace_back(cell4);
 			row2.emplace_back(cell5);
-		newBlockGrid->emplace_back(row1);
-		newBlockGrid->emplace_back(row2);
+		blockGrid.emplace_back(row1);
+		blockGrid.emplace_back(row2);
 		height = 2;
 		width = 2;
 	}
@@ -131,8 +104,8 @@ void Block::init(string blockType){
 			row2.emplace_back(cell4);
 			row2.emplace_back(cell5);
 			row2.emplace_back(cell6);
-		newBlockGrid->emplace_back(row1);
-		newBlockGrid->emplace_back(row2);
+		blockGrid.emplace_back(row1);
+		blockGrid.emplace_back(row2);
 		height = 2;
 		width = 3;
 	}
@@ -151,8 +124,8 @@ void Block::init(string blockType){
 			row2.emplace_back(cell4);
 			row2.emplace_back(cell5);
 			row2.emplace_back(cell6);
-		newBlockGrid->emplace_back(row1);
-		newBlockGrid->emplace_back(row2);
+		blockGrid.emplace_back(row1);
+		blockGrid.emplace_back(row2);
 		height = 2;
 		width = 3;
 	}
@@ -171,14 +144,13 @@ void Block::init(string blockType){
 			row2.emplace_back(cell4);
 			row2.emplace_back(cell5);
 			row2.emplace_back(cell6);
-		newBlockGrid->emplace_back(row1);
-		newBlockGrid->emplace_back(row2);
+		blockGrid.emplace_back(row1);
+		blockGrid.emplace_back(row2);
 		height = 2;
 		width = 3;
 	}
 	
-	blockGrid = newBlockGrid;
-}
+	}
 
 
 bool Block::canPlace(){
