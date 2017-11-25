@@ -17,17 +17,19 @@ TextDisplay::TextDisplay() {
 }
 
 void TextDisplay::notify(Subject<Info, State> &whoNotified){
-	
+	Info currInfo = whoNotified.getInfo();
+	theDisplay[currInfo.row][currInfo.col] = currInfo.blockType;
+
 }
 
 ostream &operator<<(ostream &out, const TextDisplay &td){
-	out << '-----------' << endl;
+	out << "-----------" << endl;
 	for(int  = 0; i < td.gridSize; i ++){
 		for(int j = 0 ;j < td.gridSize; j++){
 			cout<<td.theDisplay[i][j];
 		}
 		cout<<endl;
 	}
-	out << '-----------' << endl;
+	out << "-----------" << endl;
 	return out;	
 }
