@@ -6,12 +6,13 @@
 #include <iostream>
 using namespace std;
 
-Cell::Cell(size_t r, size_t c, char blockType): r{r}, c{c}, blockType{blockType}, colour{Colour::None}{}
+Cell::Cell(size_t r, size_t c, BlockType type) : r{r}, c{c}, type{type}, colour{Colour::None}{}
 
-Cell::Cell(size_t r, size_t c): r{r}, c{c}, colour{Colour::None}{}
+Cell::Cell(size_t r, size_t c): r{r}, c{c}, type{BlockType::None}, colour{Colour::None}{}
 
-void Cell::setPiece(Colour newColour){
-	colour = newColour;
+void Cell::setPiece(BlockType getBlock, Colour getColour) {
+	type = getBlock;
+	colour = getColour;
 	State newState{StateType::NewPiece, colour, Direction::N};
 	setState(newState);
 	notifyObservers();	
@@ -80,8 +81,13 @@ Direction reverseDirection(Direction curr){
 
 }
 
-void Cell::toggle(char bt){
-	blockType = bt;	
+void Cell::toggle(){
+	if(colour == Colour::Black){
+		colour = Colour::White;
+	}
+	else{
+		colour = Colour::Black;
+	}
 }
 
 void Cell::notify(Subject<Info, State> &whoFrom){
@@ -89,7 +95,7 @@ void Cell::notify(Subject<Info, State> &whoFrom){
 }
 
 Info Cell::getInfo()const{
-	Info thisInfo{r,c,colour, blockType};
+	Info thisInfo{r,c,colour, type};
 	return thisInfo;	
 }
 

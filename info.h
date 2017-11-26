@@ -6,7 +6,7 @@
 struct Info {
   size_t row, col;
   Colour colour;
-  char blockType;
+  BlockType type;
 };
 
 #endif

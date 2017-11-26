@@ -23,14 +23,12 @@ class Board {
   GraphicsDisplay *gd = nullptr;
   public:
   ~Board();
-  void setObserver(Observer<Info, State> *setob);
-  bool isFull() const;  // Is the game over, i.e., is the grid full?
-  Colour whoWon() const; // Who has more pieces when the board is full?
   void init(); // Sets up an n x n grid.  Clears old grid, if necessary.
-  void setPiece(Block &b);  //
-  void draw(Block &b);
-  void erase(Block &b);
-  void toggle(size_t r, size_t c);  // Flips piece at row r, col c.
+  bool isEmpty(Block &b);
+  void newBlock(Block &b);
+  void clearBlock(Block &b);
+  void dropBlock(Block &b);
+  void setPiece(size_t r, size_t c, BlockType type, Colour colour);  // Plays piece at row r, col c.
 
   friend std::ostream &operator<<(std::ostream &out, const Board &b);
 };

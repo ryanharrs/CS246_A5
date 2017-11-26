@@ -16,6 +16,7 @@
 */
 enum class StateType { NewPiece, Relay, Reply };
 enum class Colour { None, Black, White };
+enum class BlockType { None, I, J, L, O, S, Z, T};
 enum class Direction { NW, N, NE, W, E, SW, S, SE };
 
 struct State {
