@@ -14,15 +14,14 @@
              new piece, of my colour, and is a straight line away from me.  OR
              I am an in between piece, and am changing my colour now.
 */
-enum class StateType { NewPiece, Relay, Reply };
+
 enum class Colour { None, Black, White };
 enum class BlockType { None, I, J, L, O, S, Z, T};
-enum class Direction { NW, N, NE, W, E, SW, S, SE };
 
 struct State {
-  StateType type;  // See above
+
   Colour colour;   // What colour was the new piece?  (NOT what is my colour)
-  Direction direction;  // In which direction from me is the new piece?
+  BlockType type;
 };
 
 #endif

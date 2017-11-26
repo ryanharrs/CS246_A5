@@ -6,7 +6,7 @@
 #include "observer.h"
 #include "info.h"
 
-class Cell : public Subject<Info, State>, public Observer<Info, State> {
+class Cell : public Subject<Info, State>{
   const size_t r, c;
   BlockType type = BlockType::None;
   Colour colour = Colour::None;
@@ -19,8 +19,7 @@ class Cell : public Subject<Info, State>, public Observer<Info, State> {
   void setPiece(BlockType getType, Colour getColour);    // Place a piece of given colour here.
   void toggle();         // Toggles my colour.
 
-  void notify(Subject<Info, State> &whoFrom) override;// My neighbours will call this
-                                                // when they've changed state
+
   Info getInfo() const override;
 };
 #endif
