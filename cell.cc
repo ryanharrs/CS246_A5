@@ -4,6 +4,7 @@
 #include "observer.h"
 #include "info.h"
 #include <iostream>
+#undef None
 using namespace std;
 
 Cell::Cell(size_t r, size_t c, BlockType type) : r{r}, c{c}, type{type}, colour{Colour::None}{}

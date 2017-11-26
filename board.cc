@@ -11,14 +11,18 @@ Board::~Board(){
 }
 
 void Board::init(){
-  theBoard.clear();
+ 
   delete td;
   td = new TextDisplay;
+  delete gd;
+  gd  = new GraphicsDisplay(11, 800);
+  theBoard.clear();
   for (size_t row = 0; row < 18; row++) {
     vector<Cell> theRow;
     for (size_t column = 0; column < 11; column++) {
       Cell newCell{row, column};
       newCell.attach(td);
+      newCell.attach(gd);
       theRow.emplace_back(newCell);
     }
     theBoard.emplace_back(theRow);
@@ -40,7 +44,7 @@ bool Board::isEmpty(Block &b) {
 void Board::newBlock(Block &b) {
   for (int idx = 0; idx < 4; idx++) {
     setPiece(b.cellInfo(idx).row, b.cellInfo(idx).col, b.cellInfo(idx).type, b.cellInfo(idx).colour);
-  }
+   }
 }
 
 void Board::clearBlock(Block &b) {
@@ -55,6 +59,7 @@ void Board::dropBlock(Block &b) {
   }
   b.moveUp();
   newBlock(b);
+  
 }
 
 void Board::setPiece(size_t r, size_t c, BlockType type, Colour colour) {

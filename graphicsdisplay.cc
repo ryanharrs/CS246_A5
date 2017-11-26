@@ -12,27 +12,28 @@ GraphicsDisplay::GraphicsDisplay(int gridSize, int winSize):
 
 void GraphicsDisplay::notify(Subject<Info, State> &whoNotified) {
   auto info = whoNotified.getInfo();
+cout<<"hi there"<<endl;
   int cellSize = winSize / gridSize;
-  switch(info.blockType) {
-   case 'S':
+  switch(info.type) {
+   case BlockType::S:
     xw.fillRectangle(info.col * cellSize, info.row * cellSize, cellSize, cellSize, Xwindow::Green);
     break;
-   case 'I':
+   case BlockType::I:
     xw.fillRectangle(info.col * cellSize, info.row * cellSize, cellSize, cellSize, Xwindow::Cyan);
     break;
-   case 'J':
+   case BlockType::J:
     xw.fillRectangle(info.col * cellSize, info.row * cellSize, cellSize, cellSize, Xwindow::Orange);
     break;
-   case 'L':
+   case BlockType::L:
     xw.fillRectangle(info.col * cellSize, info.row * cellSize, cellSize, cellSize, Xwindow::Blue);
     break;
-   case 'O':
+   case BlockType::O:
     xw.fillRectangle(info.col * cellSize, info.row * cellSize, cellSize, cellSize, Xwindow::Yellow);
     break;
-   case 'Z':
+   case BlockType::Z:
     xw.fillRectangle(info.col * cellSize, info.row * cellSize, cellSize, cellSize, Xwindow::Red);
     break;
-    case 'T':
+    case BlockType::T:
     xw.fillRectangle(info.col * cellSize, info.row * cellSize, cellSize, cellSize, Xwindow::Purple);
     break;
    default:

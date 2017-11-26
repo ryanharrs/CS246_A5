@@ -4,7 +4,7 @@
 #include "state.h"
 #include "info.h"
 #include "cell.h"
-
+#include "graphicsdisplay.h"
 template <typename InfoType, typename StateType> class Observer;
 
 class Block {
