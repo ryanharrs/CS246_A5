@@ -1,0 +1,39 @@
+void Block::clockwiseRotate(){
+	vector<vector<Cell>> newBlockGrid;
+	int size = blockGrid->size() - 1;
+	
+	for(int j = 0; j < blockGrid[0].size(); j++){
+		vector<Cell> row;
+		for(int i =size; i >= 0; i--){
+			row.emplace_back(blockGrid[i][j]);
+		}
+		newBlockGrid.emplace_back(row);
+	}
+	delete blockGrid;
+	blockGrid = &newBlockGrid;
+	int tempWidth = width;
+	width = height;	
+	height = tempWidth;
+	notifyObservers();
+}
+
+
+
+void Block::counterClockwiseRotate(){
+	vector<vector<Cell>> newBlockGrid;
+	int size = blockGrid->size() - 1;
+	
+	for(int j = size; j>=0; j--){
+		vector<Cell> row;
+		for(int i = 0; i < blockGrid->size(); i++){
+			row.emplace_back(blockGrid[i][j]);
+		}
+		newBlockGrid.emplace_back(row);
+	}
+	delete blockGrid;
+	blockGrid = &newBlockGrid;
+	int tempWidth = width;
+	width = height;	
+	height = tempWidth;
+	notifyObservers();
+}
