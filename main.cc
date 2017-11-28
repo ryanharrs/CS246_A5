@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <vector>
 #include "block.h"
+#include <ctime>
 using namespace std;
 
 // Do not remove any code; do not add code other than where indicated.
@@ -144,11 +145,36 @@ int main(int argc, char *argv[]) {
             gameBoard.newBlock(b);
           }
           cout << cmd << endl;
-        } else if (cmd == "clockwise"){
+        } else if (cmd == "down"){
+          b.moveDown();
+          if (gameBoard.isEmpty(b)) {
+            gameBoard.newBlock(b);
+         } else {
+            b.moveUp();
+            gameBoard.newBlock(b);
+          }
+          cout << cmd << endl;
+       }else if (cmd == "clockwise"){
+	 b.clockwiseRotate();
+          if (gameBoard.isEmpty(b)) {
+            gameBoard.newBlock(b);
+         } else {
+            b.moveUp();
+            gameBoard.newBlock(b);
+          }
           cout << cmd << endl;
         } else if (cmd == "counterclockwise"){
+	  b.counterClockwiseRotate();
+          if (gameBoard.isEmpty(b)) {
+            gameBoard.newBlock(b);
+         } else {
+            b.moveUp();
+            gameBoard.newBlock(b);
+          }
+
           cout << cmd << endl;
         } else if (cmd == "drop"){
+    	  cout<<"youre a wizard harry"<<endl;
           break;
           cout << cmd << endl;
         }
