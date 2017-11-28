@@ -159,7 +159,7 @@ void Block::counterClockwiseRotate(){
 
 }
 
-int getBlockLevel(){
+int Block::getBlockLevel(){
 	return blockLevel;
 }
 

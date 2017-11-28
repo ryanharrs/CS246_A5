@@ -19,7 +19,7 @@ class Block {
 	std::vector<int> blockRows;
 	void clockwiseRotate();
 	void counterClockwiseRotate();
-	void init(BlockType type);
+	void init(BlockType type, int level);
 	Info cellInfo(int idx);
 	bool canPlace();
 	void moveRight();

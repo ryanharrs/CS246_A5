@@ -22,7 +22,7 @@ class Board {
   // Add private members, if necessary.
   GraphicsDisplay *gd = nullptr;
   bool checkIndividualRow(std::vector<Cell> row);
-  void checkRows(Board &b, int level);
+  void checkRows(Block &b, int level);
   int currScore = 0;
   public:
   int getCurrScore();
@@ -31,9 +31,9 @@ class Board {
   bool isEmpty(Block &b);
   void newBlock(Block &b);
   void clearBlock(Block &b);
-  void dropBlock(Block &b);
+  void dropBlock(Block &b, int level);
   void setPiece(size_t r, size_t c, BlockType type, Colour colour);  // Plays piece at row r, col c.
-
+ 
   friend std::ostream &operator<<(std::ostream &out, const Board &b);
 };
 

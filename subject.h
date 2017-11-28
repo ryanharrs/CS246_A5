@@ -27,11 +27,17 @@ template <typename InfoType, typename StateType> class Subject {
   void setState(StateType newS);
  public:
   void attach(Observer<InfoType, StateType> *o); 
-  void removeObservers(); 
+  void copyObservers(Subject<InfoType, StateType> *s);
+  std::vector<Observer<InfoType,StateType>*> getObservers(); 
   void notifyObservers();
   virtual InfoType getInfo() const = 0;
   StateType getState() const;
 };
+
+template <typename InfoType, typename StateType>
+ std::vector<Observer<InfoType,StateType>*> Subject<InfoType,StateType>::getObservers(){
+	return observers;
+}
 
 template <typename InfoType, typename StateType>
 void Subject<InfoType, StateType>::attach(Observer<InfoType, StateType> *o) {
@@ -39,8 +45,11 @@ void Subject<InfoType, StateType>::attach(Observer<InfoType, StateType> *o) {
 }
 
 template <typename InfoType, typename StateType>
-void Subject<InfoType, StateType>::removeObservers() {
-  observers.clear();
+void Subject<InfoType, StateType>::copyObservers(Subject<InfoType,StateType> *s) {
+   observers.clear();
+   for(int i = 0; i < s->getObservers().size(); i++){
+	observers.emplace_back(s->getObservers()[i]);
+   }
 }
 
 template <typename InfoType, typename StateType>

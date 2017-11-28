@@ -14,7 +14,7 @@ class Cell : public Subject<Info, State>, public Observer<Info,State>{
   // Add other private members if necessary
 
  public:
-  int sameBlockCells();
+  int getSameBlockCells();
   Cell(size_t r, size_t c, BlockType type);
   Cell(size_t r, size_t c);
   void setPiece(BlockType getType, Colour getColour);    // Place a piece of given colour here.

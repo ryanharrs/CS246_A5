@@ -74,16 +74,15 @@ void Board::checkRows(Block &b, int level){
 				rowsCleared++;
 				for(int j = 0; j < theBoard[i].size(); j++){
 					theBoard[i][j].setPiece(BlockType::None, Colour::None);
-					theBoard[i][j].removeObservers();
 					if(theBoard[i][j].getSameBlockCells() == 3){
-						currScore += theBoard[i][j].getBlockLevel();
+						currScore += b.getBlockLevel();
 					}
 				}
 				for(int k = i; k > 0; k--){
 					for(int l = 0; l < theBoard[k].size(); l++){
 						theBoard[k][l].setPiece(theBoard[k-1][l].getInfo().type, theBoard[k-1][l].getInfo().colour);
+						theBoard[k][l].copyObservers(&theBoard[k-1][l]);
 						
-						// need to move observers now
 					}
 				}
 			}	
@@ -92,12 +91,12 @@ void Board::checkRows(Block &b, int level){
 	}
 	currScore += ((level + rowsCleared) * (level + rowsCleared));
 }
-int getCurrScore(){
+int Board::getCurrScore(){
 	return currScore;
 }
 
 
-void Board::dropBlock(Block &b, level) {
+void Board::dropBlock(Block &b, int level) {
   while (isEmpty(b)) {
       b.moveDown();
   }
@@ -109,7 +108,7 @@ void Board::dropBlock(Block &b, level) {
 	int col = b.cellInfo(idx).col;
 	for(int j = 0; j < 4; j++){
 		if(j != idx){
-			theBoard[row][col].attach(theBoard[b.cellInfo(j).row][b.cellInfo(j).col]);
+			theBoard[row][col].attach(&theBoard[b.cellInfo(j).row][b.cellInfo(j).col]);
 		}
 	}
   }

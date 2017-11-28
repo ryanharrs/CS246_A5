@@ -87,8 +87,8 @@ int main(int argc, char *argv[]) {
           //}
       } else if (level==1){
         int r = rand() % 12 + 1;
-        if (r==1){b.init(BlockType::S); }
-        else if (r==2){b.init(BlockType::Z);}
+        if (r==1){b.init(BlockType::S, level); }
+        else if (r==2){b.init(BlockType::Z, level);}
         else if ((r==3)||(r==4)) {b.init(BlockType::T, level);}
         else if ((r==5)||(r==6)) {b.init(BlockType::I, level);}
         else if ((r==7)||(r==8)) {b.init(BlockType::J, level);}
@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
         else if (r==6) {b.init(BlockType::I, level);}
         else if (r==7) {b.init(BlockType::J, level); }
         else if (r==8) {b.init(BlockType::L, level);}
-        else {b.init(BlockType::O);}
+        else {b.init(BlockType::O, level);}
       }
       cout << level << endl;
       if (gameBoard.isEmpty(b)) {
@@ -186,6 +186,7 @@ int main(int argc, char *argv[]) {
       gameBoard.clearBlock(b);
       gameBoard.dropBlock(b, level);
       cout << gameBoard << endl;
+      cout<<gameBoard.getCurrScore()<<endl;
     }
   } catch (ios::failure &) {}  // Any I/O failure quits
 }
