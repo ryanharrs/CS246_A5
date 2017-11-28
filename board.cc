@@ -67,11 +67,16 @@ bool Board::checkIndividualRow(vector<Cell> row){
 
 void Board::checkRow(int i){
 	if(i >=0){	
-	if(checkIndividualRow(theBoard[i]) == true){
-		for(int j = 0; j < theBoard[i].size(); j++){
-			theBoard[i][j].setPiece(BlockType::None, Colour::None);
-		}
-	}	
+		if(checkIndividualRow(theBoard[i]) == true){
+			for(int j = 0; j < theBoard[i].size(); j++){
+				theBoard[i][j].setPiece(BlockType::None, Colour::None);
+			}
+			for(int k = i; k > 0; k--){
+				for(int l = 0; l < theBoard[k].size(); l++){
+					theBoard[k][l].setPiece(theBoard[k-1][l].getInfo().type, theBoard[k-1][l].getInfo().colour);
+				}
+			}
+		}	
 	}
 }
 
