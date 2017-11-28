@@ -7,47 +7,76 @@ Block::~Block(){}
 void Block::clockwiseRotate(){//havent yet figured out how i should rotate the straight peice
 	vector<Cell> newCells;
 	for (int idx = 0; idx < 4; idx++) {
-		int x = middle->getInfo().row - blockGrid[idx].getInfo().row;
-		int y = middle->getInfo().col - blockGrid[idx].getInfo().col;
-		int newRow = 0;
-		int newCol = 0;
-		if( x == 0 && y == 1){// middle left
-			newRow = blockGrid[idx].getInfo().row - 1;
-			newCol = blockGrid[idx].getInfo().col + 1;
+		if(blockGrid[idx].getInfo().type == BlockType::I){
+			
+			if(rotationVersion % 2 == 0){
+				Cell newCell(middle->getInfo().row - blockGrid[idx].getInfo().col +  middle->getInfo().col, middle->getInfo().col, BlockType::I); 
+				newCells.emplace_back(newCell);
+			}
+			else{
+				Cell newCell( middle->getInfo().row, middle->getInfo().col - blockGrid[idx].getInfo().row +  middle->getInfo().row, BlockType::I);
+				newCells.emplace_back(newCell);
+			}
+			
 		}
-		else if( x == 0 && y == -1){// middle right
-			newRow = blockGrid[idx].getInfo().row + 1;
-			newCol = blockGrid[idx].getInfo().col - 1;
+		else if(blockGrid[idx].getInfo().type == BlockType::O){
+			return;
 		}
-		else if( x == 1 && y == 1){//top left
-			newRow = blockGrid[idx].getInfo().row;
-			newCol = blockGrid[idx].getInfo().col + 2;
-		}
-		else if( x == 1 && y == -1){//top right
-			newRow = blockGrid[idx].getInfo().row + 2;
-			newCol = blockGrid[idx].getInfo().col;
-		}
-		else if( x == 1 && y == 0){ //top middle
-			newRow = blockGrid[idx].getInfo().row + 1;
-			newCol = blockGrid[idx].getInfo().col + 1;
-		}
-		else if( x == -1 && y == 1){ // bottom left
-			newRow = blockGrid[idx].getInfo().row - 2;
-			newCol = blockGrid[idx].getInfo().col;
-		}
-		else if( x == -1 && y == 0){ // bottom middle
-			newRow = blockGrid[idx].getInfo().row - 1;
-			newCol = blockGrid[idx].getInfo().col - 1;
-		}
-		else if( x == -1 && y == -1){ // bottom right
-			newRow = blockGrid[idx].getInfo().row;
-			newCol = blockGrid[idx].getInfo().col - 2;
+		else{
+			int x = middle->getInfo().row - blockGrid[idx].getInfo().row;
+			int y = middle->getInfo().col - blockGrid[idx].getInfo().col;
+			int newRow = middle->getInfo().row;
+			int newCol = middle->getInfo().col;
+			if( x == 0 && y == 1){// middle left
+				newRow = blockGrid[idx].getInfo().row - 1;
+				newCol = blockGrid[idx].getInfo().col + 1;
+			}
+			else if( x == 0 && y == -1){// middle right
+				newRow = blockGrid[idx].getInfo().row + 1;
+				newCol = blockGrid[idx].getInfo().col - 1;
+			}
+			else if( x == 1 && y == 1){//top left
+				newRow = blockGrid[idx].getInfo().row;
+				newCol = blockGrid[idx].getInfo().col + 2;
+			}
+			else if( x == 1 && y == -1){//top right
+				newRow = blockGrid[idx].getInfo().row + 2;
+				newCol = blockGrid[idx].getInfo().col;
+			}
+			else if( x == 1 && y == 0){ //top middle
+				newRow = blockGrid[idx].getInfo().row + 1;
+				newCol = blockGrid[idx].getInfo().col + 1;
+			}
+			else if( x == -1 && y == 1){ // bottom left
+				newRow = blockGrid[idx].getInfo().row - 2;
+				newCol = blockGrid[idx].getInfo().col;
+			}
+			else if( x == -1 && y == 0){ // bottom middle
+				newRow = blockGrid[idx].getInfo().row - 1;
+				newCol = blockGrid[idx].getInfo().col - 1;
+			}
+			else if( x == -1 && y == -1){ // bottom right
+				newRow = blockGrid[idx].getInfo().row;
+				newCol = blockGrid[idx].getInfo().col - 2;
+			}
+			if(blockGrid[idx].getInfo().type == BlockType::J || blockGrid[idx].getInfo().type == BlockType::L){
+				if(rotationVersion %4 == 1){
+					newRow++;
+				}
+				if(rotationVersion %4 == 3){
+					newRow++;
+				}
+			}
+			if(newRow < 0 || newRow > 17 || newCol < 0 || newCol > 10){
+				return;
+			}
+			Cell newCell(newRow, newCol, blockGrid[idx].getInfo().type);
+			newCells.emplace_back(newCell);
+			
 		}	
-		Cell newCell(newRow, newCol, blockGrid[idx].getInfo().type);
-		cout<<newRow<<"-"<<newCol<<endl;
-		newCells.emplace_back(newCell);
 	}
 	blockGrid.swap(newCells);
+	rotationVersion++;
 }
 
 
@@ -56,6 +85,7 @@ void Block::counterClockwiseRotate(){
 
 void Block::init(BlockType type){
 	blockGrid.clear();
+	
 	Cell *middleCell = new Cell(3,1);
 	delete middle;
 	middle = middleCell;
@@ -64,6 +94,9 @@ void Block::init(BlockType type){
 			Cell newCell(3,i, BlockType::I);
 			blockGrid.emplace_back(newCell);
 		}
+		delete middle;
+		Cell *middleCell = new Cell(3, 4);
+		middle = middleCell;
 	}
 	if(type == BlockType::J){
 		Cell cell1(3,0, BlockType::J);

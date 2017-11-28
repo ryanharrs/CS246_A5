@@ -12,6 +12,7 @@ class Block {
 	Cell *middle = nullptr;
 	void updateBlockRows();
 	bool findNum(std::vector<int> row, int j);
+	int rotationVersion = 0;
  	public:
 	std::vector<int> blockRows;
 	void clockwiseRotate();
