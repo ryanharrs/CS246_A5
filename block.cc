@@ -4,7 +4,50 @@ using namespace std;
 
 Block::~Block(){}
 
-void Block::clockwiseRotate(){
+void Block::clockwiseRotate(){//havent yet figured out how i should rotate the straight peice
+	vector<Cell> newCells;
+	for (int idx = 0; idx < 4; idx++) {
+		int x = middle->getInfo().row - blockGrid[idx].getInfo().row;
+		int y = middle->getInfo().col - blockGrid[idx].getInfo().col;
+		int newRow = 0;
+		int newCol = 0;
+		if( x == 0 && y == 1){// middle left
+			newRow = blockGrid[idx].getInfo().row - 1;
+			newCol = blockGrid[idx].getInfo().col + 1;
+		}
+		else if( x == 0 && y == -1){// middle right
+			newRow = blockGrid[idx].getInfo().row + 1;
+			newCol = blockGrid[idx].getInfo().col - 1;
+		}
+		else if( x == 1 && y == 1){//top left
+			newRow = blockGrid[idx].getInfo().row;
+			newCol = blockGrid[idx].getInfo().col + 2;
+		}
+		else if( x == 1 && y == -1){//top right
+			newRow = blockGrid[idx].getInfo().row + 2;
+			newCol = blockGrid[idx].getInfo().col;
+		}
+		else if( x == 1 && y == 0){ //top middle
+			newRow = blockGrid[idx].getInfo().row + 1;
+			newCol = blockGrid[idx].getInfo().col + 1;
+		}
+		else if( x == -1 && y == 1){ // bottom left
+			newRow = blockGrid[idx].getInfo().row - 2;
+			newCol = blockGrid[idx].getInfo().col;
+		}
+		else if( x == -1 && y == 0){ // bottom middle
+			newRow = blockGrid[idx].getInfo().row - 1;
+			newCol = blockGrid[idx].getInfo().col - 1;
+		}
+		else if( x == -1 && y == -1){ // bottom right
+			newRow = blockGrid[idx].getInfo().row;
+			newCol = blockGrid[idx].getInfo().col - 2;
+		}	
+		Cell newCell(newRow, newCol, blockGrid[idx].getInfo().type);
+		cout<<newRow<<"-"<<newCol<<endl;
+		newCells.emplace_back(newCell);
+	}
+	blockGrid.swap(newCells);
 }
 
 
@@ -13,6 +56,9 @@ void Block::counterClockwiseRotate(){
 
 void Block::init(BlockType type){
 	blockGrid.clear();
+	Cell *middleCell = new Cell(3,1);
+	delete middle;
+	middle = middleCell;
 	if(type == BlockType::I){
 		for(int i = 0; i < 4;){
 			Cell newCell(3,i, BlockType::I);
@@ -79,6 +125,26 @@ void Block::init(BlockType type){
 		blockGrid.emplace_back(cell3);
 		blockGrid.emplace_back(cell4);
 	}
+	updateBlockRows();
+}
+
+
+void Block::updateBlockRows(){
+     blockRows.clear();
+      for(int i = 0; i <blockGrid.size(); i++){
+	  if(findNum(blockRows, blockGrid[i].getInfo().row) == false){
+		blockRows.emplace_back(blockGrid[i].getInfo().row);
+	  }
+	}
+}
+
+bool Block::findNum(vector<int> rows, int j){
+	for(int i = 0; i <rows.size(); i++){
+		if(i == j){
+			return true;
+		}
+	}
+	return false;
 }
 
 void Block::moveRight() {
@@ -88,6 +154,9 @@ void Block::moveRight() {
 		newCells.emplace_back(newCell);
 	}
 	blockGrid.swap(newCells);
+	Cell *newMiddle = new Cell(middle->getInfo().row, middle->getInfo().col+1);
+	delete middle;
+	middle = newMiddle;
 }
 
 void Block::moveLeft() {
@@ -97,6 +166,9 @@ void Block::moveLeft() {
 		newCells.emplace_back(newCell);
 	}
 	blockGrid.swap(newCells);
+	Cell *newMiddle = new Cell(middle->getInfo().row, middle->getInfo().col-1);
+	delete middle;
+	middle = newMiddle;
 }
 
 void Block::moveDown() {
@@ -106,6 +178,12 @@ void Block::moveDown() {
 		newCells.emplace_back(newCell);
 	}
 	blockGrid.swap(newCells);
+	for(int i = 0; i < blockRows.size(); i++){
+		blockRows[i]++;
+	}
+	Cell *newMiddle = new Cell(middle->getInfo().row+1, middle->getInfo().col);
+	delete middle;
+	middle = newMiddle;
 }
 
 void Block::moveUp() {
@@ -115,6 +193,12 @@ void Block::moveUp() {
 		newCells.emplace_back(newCell);
 	}
 	blockGrid.swap(newCells);
+	for(int i = 0; i < blockRows.size(); i++){
+		blockRows[i]--;
+	}
+	Cell *newMiddle = new Cell(middle->getInfo().row-1, middle->getInfo().col);
+	delete middle;
+	middle = newMiddle;
 }
 
 Info Block::cellInfo(int idx) {

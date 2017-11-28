@@ -9,7 +9,11 @@ template <typename InfoType, typename StateType> class Observer;
 
 class Block {
 	std::vector<Cell> blockGrid;
+	Cell *middle = nullptr;
+	void updateBlockRows();
+	bool findNum(std::vector<int> row, int j);
  	public:
+	std::vector<int> blockRows;
 	void clockwiseRotate();
 	void counterClockwiseRotate();
 	void init(BlockType type);
