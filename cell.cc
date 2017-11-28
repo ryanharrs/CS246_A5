@@ -22,7 +22,9 @@ void Cell::setPiece(BlockType getBlock, Colour getColour) {
 }
 
 
-
+int Cell::getSameBlockCells(){
+	return sameBlockCells;
+}
 
 Info Cell::getInfo()const{
 	Info thisInfo{r,c,colour, type};
@@ -30,6 +32,6 @@ Info Cell::getInfo()const{
 }
 
 void Cell::notify(Subject<Info, State> &whoFrom){
-	
+	sameBlockCells++;
 
 }

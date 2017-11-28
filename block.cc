@@ -159,9 +159,13 @@ void Block::counterClockwiseRotate(){
 
 }
 
-void Block::init(BlockType type){
+int getBlockLevel(){
+	return blockLevel;
+}
+
+void Block::init(BlockType type, int level){
 	blockGrid.clear();
-	
+	blockLevel = level;
 	Cell *middleCell = new Cell(3,1);
 	delete middle;
 	middle = middleCell;

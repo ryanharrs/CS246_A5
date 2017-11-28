@@ -65,33 +65,45 @@ bool Board::checkIndividualRow(vector<Cell> row){
 }
 
 
-void Board::checkRow(int i){
-	if(i >=0){	
-		if(checkIndividualRow(theBoard[i]) == true){
-			for(int j = 0; j < theBoard[i].size(); j++){
-				theBoard[i][j].setPiece(BlockType::None, Colour::None);
-				theBoard[i][j].removeObservers();
-			}
-			for(int k = i; k > 0; k--){
-				for(int l = 0; l < theBoard[k].size(); l++){
-					theBoard[k][l].setPiece(theBoard[k-1][l].getInfo().type, theBoard[k-1][l].getInfo().colour);
+void Board::checkRows(Block &b, int level){
+	int rowsCleared = 0;
+  	for(int q = 0; q < b.blockRows.size(); q++){
+		int i = b.blockRows[q];
+		if(i >=0){	
+			if(checkIndividualRow(theBoard[i]) == true){
+				rowsCleared++;
+				for(int j = 0; j < theBoard[i].size(); j++){
+					theBoard[i][j].setPiece(BlockType::None, Colour::None);
+					theBoard[i][j].removeObservers();
+					if(theBoard[i][j].getSameBlockCells() == 3){
+						currScore += theBoard[i][j].getBlockLevel();
+					}
 				}
-			}
-		}	
+				for(int k = i; k > 0; k--){
+					for(int l = 0; l < theBoard[k].size(); l++){
+						theBoard[k][l].setPiece(theBoard[k-1][l].getInfo().type, theBoard[k-1][l].getInfo().colour);
+						
+						// need to move observers now
+					}
+				}
+			}	
+		}
+		
 	}
+	currScore += ((level + rowsCleared) * (level + rowsCleared));
+}
+int getCurrScore(){
+	return currScore;
 }
 
 
-
-void Board::dropBlock(Block &b) {
+void Board::dropBlock(Block &b, level) {
   while (isEmpty(b)) {
       b.moveDown();
   }
   b.moveUp();
   newBlock(b);
-  for(int i = 0; i < b.blockRows.size(); i++){
-	checkRow(b.blockRows[i]);
-  } 
+  checkRows(b, level);
   for(int idx = 0; idx < 4; idx++){
 	int row = b.cellInfo(idx).row;
 	int col = b.cellInfo(idx).col;

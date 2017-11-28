@@ -22,8 +22,10 @@ class Board {
   // Add private members, if necessary.
   GraphicsDisplay *gd = nullptr;
   bool checkIndividualRow(std::vector<Cell> row);
-  void checkRow(int i);
+  void checkRows(Board &b, int level);
+  int currScore = 0;
   public:
+  int getCurrScore();
   ~Board();
   void init(); // Sets up an n x n grid.  Clears old grid, if necessary.
   bool isEmpty(Block &b);

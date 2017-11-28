@@ -11,9 +11,11 @@ class Block {
 	std::vector<Cell> blockGrid;
 	Cell *middle = nullptr;
 	void updateBlockRows();
+	int blockLevel;
 	bool findNum(std::vector<int> row, int j);
 	int rotationVersion = 0;
  	public:
+	int getBlockLevel();
 	std::vector<int> blockRows;
 	void clockwiseRotate();
 	void counterClockwiseRotate();

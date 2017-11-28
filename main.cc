@@ -89,28 +89,28 @@ int main(int argc, char *argv[]) {
         int r = rand() % 12 + 1;
         if (r==1){b.init(BlockType::S); }
         else if (r==2){b.init(BlockType::Z);}
-        else if ((r==3)||(r==4)) {b.init(BlockType::T);}
-        else if ((r==5)||(r==6)) {b.init(BlockType::I);}
-        else if ((r==7)||(r==8)) {b.init(BlockType::J);}
-        else if ((r==9)||(r==10)) {b.init(BlockType::L);}
-        else {b.init(BlockType::O);}
+        else if ((r==3)||(r==4)) {b.init(BlockType::T, level);}
+        else if ((r==5)||(r==6)) {b.init(BlockType::I, level);}
+        else if ((r==7)||(r==8)) {b.init(BlockType::J, level);}
+        else if ((r==9)||(r==10)) {b.init(BlockType::L, level);}
+        else {b.init(BlockType::O, level);}
       } else if (level==2){
       int r = rand() % 7 + 1;
-        if (r==1) {b.init(BlockType::S); }
-        else if (r==2) {b.init(BlockType::Z);}
-        else if (r==3) {b.init(BlockType::T);}
-        else if (r==4) {b.init(BlockType::I);}
-        else if (r==5) {b.init(BlockType::J); }
-        else if (r==6) {b.init(BlockType::L);}
-        else {b.init(BlockType::O);}
+        if (r==1) {b.init(BlockType::S, level); }
+        else if (r==2) {b.init(BlockType::Z, level);}
+        else if (r==3) {b.init(BlockType::T, level);}
+        else if (r==4) {b.init(BlockType::I, level);}
+        else if (r==5) {b.init(BlockType::J, level); }
+        else if (r==6) {b.init(BlockType::L, level);}
+        else {b.init(BlockType::O, level);}
       } else {
         int r = rand() % 9 + 1;
-        if ((r==1)||(r==2)){b.init(BlockType::S); }
-        else if ((r==3)||(r==4)) {b.init(BlockType::Z);}
-        else if (r==5) {b.init(BlockType::T);}
-        else if (r==6) {b.init(BlockType::I);}
-        else if (r==7) {b.init(BlockType::J); }
-        else if (r==8) {b.init(BlockType::L);}
+        if ((r==1)||(r==2)){b.init(BlockType::S, level); }
+        else if ((r==3)||(r==4)) {b.init(BlockType::Z, level);}
+        else if (r==5) {b.init(BlockType::T, level);}
+        else if (r==6) {b.init(BlockType::I, level);}
+        else if (r==7) {b.init(BlockType::J, level); }
+        else if (r==8) {b.init(BlockType::L, level);}
         else {b.init(BlockType::O);}
       }
       cout << level << endl;
@@ -184,7 +184,7 @@ int main(int argc, char *argv[]) {
         cout << endl;
       }
       gameBoard.clearBlock(b);
-      gameBoard.dropBlock(b);
+      gameBoard.dropBlock(b, level);
       cout << gameBoard << endl;
     }
   } catch (ios::failure &) {}  // Any I/O failure quits
