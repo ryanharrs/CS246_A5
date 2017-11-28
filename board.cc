@@ -70,6 +70,7 @@ void Board::checkRow(int i){
 		if(checkIndividualRow(theBoard[i]) == true){
 			for(int j = 0; j < theBoard[i].size(); j++){
 				theBoard[i][j].setPiece(BlockType::None, Colour::None);
+				theBoard[i][j].removeObservers();
 			}
 			for(int k = i; k > 0; k--){
 				for(int l = 0; l < theBoard[k].size(); l++){
@@ -91,6 +92,16 @@ void Board::dropBlock(Block &b) {
   for(int i = 0; i < b.blockRows.size(); i++){
 	checkRow(b.blockRows[i]);
   } 
+  for(int idx = 0; idx < 4; idx++){
+	int row = b.cellInfo(idx).row;
+	int col = b.cellInfo(idx).col;
+	for(int j = 0; j < 4; j++){
+		if(j != idx){
+			theBoard[row][col].attach(theBoard[b.cellInfo(j).row][b.cellInfo(j).col]);
+		}
+	}
+  }
+
 }
 
 

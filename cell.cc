@@ -29,3 +29,7 @@ Info Cell::getInfo()const{
 	return thisInfo;	
 }
 
+void Cell::notify(Subject<Info, State> &whoFrom){
+	
+
+}

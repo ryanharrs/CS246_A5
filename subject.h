@@ -26,7 +26,8 @@ template <typename InfoType, typename StateType> class Subject {
  protected:
   void setState(StateType newS);
  public:
-  void attach(Observer<InfoType, StateType> *o);  
+  void attach(Observer<InfoType, StateType> *o); 
+  void removeObservers(); 
   void notifyObservers();
   virtual InfoType getInfo() const = 0;
   StateType getState() const;
@@ -35,6 +36,11 @@ template <typename InfoType, typename StateType> class Subject {
 template <typename InfoType, typename StateType>
 void Subject<InfoType, StateType>::attach(Observer<InfoType, StateType> *o) {
   observers.emplace_back(o);
+}
+
+template <typename InfoType, typename StateType>
+void Subject<InfoType, StateType>::removeObservers() {
+  observers.clear();
 }
 
 template <typename InfoType, typename StateType>
