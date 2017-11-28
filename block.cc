@@ -166,7 +166,7 @@ void Block::init(BlockType type){
 	delete middle;
 	middle = middleCell;
 	if(type == BlockType::I){
-		for(int i = 0; i < 4;){
+		for(int i = 0; i < 4; i++){
 			Cell newCell(3,i, BlockType::I);
 			blockGrid.emplace_back(newCell);
 		}
