@@ -7,6 +7,10 @@
 #undef None
 using namespace std;
 
+Cell::~Cell(){
+
+}
+
 Cell::Cell(size_t r, size_t c, BlockType type) : r{r}, c{c}, type{type}, colour{Colour::None}{}
 
 Cell::Cell(size_t r, size_t c): r{r}, c{c}, type{BlockType::None}, colour{Colour::None}{}
@@ -18,14 +22,6 @@ void Cell::setPiece(BlockType getBlock, Colour getColour) {
 }
 
 
-void Cell::toggle(){
-	if(colour == Colour::Black){
-		colour = Colour::White;
-	}
-	else{
-		colour = Colour::Black;
-	}
-}
 
 
 Info Cell::getInfo()const{

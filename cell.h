@@ -17,9 +17,7 @@ class Cell : public Subject<Info, State>{
   Cell(size_t r, size_t c, BlockType type);
   Cell(size_t r, size_t c);
   void setPiece(BlockType getType, Colour getColour);    // Place a piece of given colour here.
-  void toggle();         // Toggles my colour.
-
-
+  ~Cell();
   Info getInfo() const override;
 };
 #endif
