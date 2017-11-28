@@ -1,6 +1,6 @@
 #include "board.h"
 #include <iostream>
-#include <vector>
+
 #include <cstddef>
 #undef None
 using namespace std;
@@ -15,7 +15,7 @@ void Board::init(){
   delete td;
   td = new TextDisplay;
   delete gd;
-  gd  = new GraphicsDisplay(11, 800);
+  gd  = new GraphicsDisplay;
   theBoard.clear();
   for (size_t row = 0; row < 18; row++) {
     vector<Cell> theRow;
@@ -53,14 +53,43 @@ void Board::clearBlock(Block &b) {
   }
 }
 
+
+
+bool Board::checkIndividualRow(vector<Cell> row){
+	for(int i = 0; i < row.size(); i++){
+		if(row[i].getInfo().type == BlockType::None){
+			return false;
+		}
+	}
+	return true;
+}
+
+
+void Board::checkRow(int i){
+	if(i >=0){	
+	if(checkIndividualRow(theBoard[i]) == true){
+		for(int j = 0; j < theBoard[i].size(); j++){
+			theBoard[i][j].setPiece(BlockType::None, Colour::None);
+		}
+	}	
+	}
+}
+
+
+
 void Board::dropBlock(Block &b) {
   while (isEmpty(b)) {
       b.moveDown();
   }
   b.moveUp();
   newBlock(b);
-  
+  for(int i = 0; i < b.blockRows.size(); i++){
+	checkRow(b.blockRows[i]);
+  } 
 }
+
+
+
 
 void Board::setPiece(size_t r, size_t c, BlockType type, Colour colour) {
   theBoard[r][c].setPiece(type, colour);

@@ -21,6 +21,8 @@ class Board {
   Observer<Info, State> *ob = nullptr;  // Another observer (intent:  graphics)
   // Add private members, if necessary.
   GraphicsDisplay *gd = nullptr;
+  bool checkIndividualRow(std::vector<Cell> row);
+  void checkRow(int i);
   public:
   ~Board();
   void init(); // Sets up an n x n grid.  Clears old grid, if necessary.
