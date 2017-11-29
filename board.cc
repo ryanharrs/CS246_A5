@@ -90,7 +90,9 @@ void Board::checkRows(Block &b, int level){
 		}
 		
 	}
-	currScore += ((level + rowsCleared) * (level + rowsCleared));
+	if(rowsCleared > 0){
+		currScore += ((level + rowsCleared) * (level + rowsCleared));
+	}
 }
 int Board::getCurrScore(){
 	return currScore;
