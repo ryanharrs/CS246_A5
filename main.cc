@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
 
   cin.exceptions(ios::eofbit|ios::failbit);
   string cmd;
-
+  void srand(int seed);
   string block;
   int level = 0;
   
@@ -155,7 +155,7 @@ int main(int argc, char *argv[]) {
           }
           cout << cmd << endl;
        }else if (cmd == "clockwise"){
-	 b.clockwiseRotate();
+	          b.clockwiseRotate();
           if (gameBoard.isEmpty(b)) {
             gameBoard.newBlock(b);
          } else {
@@ -164,7 +164,7 @@ int main(int argc, char *argv[]) {
           }
           cout << cmd << endl;
         } else if (cmd == "counterclockwise"){
-	  b.counterClockwiseRotate();
+	        b.counterClockwiseRotate();
           if (gameBoard.isEmpty(b)) {
             gameBoard.newBlock(b);
          } else {

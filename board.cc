@@ -119,8 +119,6 @@ void Board::dropBlock(Block &b, int level) {
 }
 
 
-
-
 void Board::setPiece(size_t r, size_t c, BlockType type, Colour colour) {
   theBoard[r][c].setPiece(type, colour);
 }
