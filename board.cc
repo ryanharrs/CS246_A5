@@ -81,8 +81,9 @@ void Board::checkRows(Block &b, int level){
 				for(int k = i; k > 0; k--){
 					for(int l = 0; l < theBoard[k].size(); l++){
 						theBoard[k][l].setPiece(theBoard[k-1][l].getInfo().type, theBoard[k-1][l].getInfo().colour);
-						theBoard[k][l].copyObservers(&theBoard[k-1][l]);
-						
+						if(theBoard[k][l].getInfo().colour != Colour::None){
+							theBoard[k][l].copyObservers(&theBoard[k-1][l]);
+						}
 					}
 				}
 			}	
