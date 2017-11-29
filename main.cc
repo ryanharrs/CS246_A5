@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
 
   cin.exceptions(ios::eofbit|ios::failbit);
   string cmd;
-  void srand(int seed);
+  srand(time(NULL));
   string block;
   int level = 0;
   
