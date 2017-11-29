@@ -2,6 +2,7 @@
 #define __BOARD_H__
 #include <iostream>
 #include <vector>
+#include <iomanip>
 #include <cstddef>
 #include "cell.h"
 #include "block.h"
@@ -18,16 +19,19 @@ class InvalidMove{};
 class Board {
   std::vector<std::vector<Cell>> theBoard;  // The actual grid.
   TextDisplay *td = nullptr; // The text display.
+  int currLevel = 0;
   Observer<Info, State> *ob = nullptr;  // Another observer (intent:  graphics)
   // Add private members, if necessary.
   GraphicsDisplay *gd = nullptr;
   bool checkIndividualRow(std::vector<Cell> row);
   void checkRows(Block &b, int level);
   int currScore = 0;
+  int highScore = 0;
   public:
+  void levelup();
   int getCurrScore();
   ~Board();
-  void init(); // Sets up an n x n grid.  Clears old grid, if necessary.
+  void init(int currLevel); // Sets up an n x n grid.  Clears old grid, if necessary.
   bool isEmpty(Block &b);
   void newBlock(Block &b);
   void clearBlock(Block &b);

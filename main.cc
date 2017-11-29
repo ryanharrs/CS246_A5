@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
 
   bool random = 1;
   Board gameBoard;
-  gameBoard.init();
+  gameBoard.init(level);
 
   vector <string> cmds; 
   string a [16]= {"left", "right", "down", "clockwise", "counterclockwise", "drop", "levelup", "leveldown", "norandom", "random", "sequence", "I", "J", "L", "restart", "hint"};
@@ -66,6 +66,7 @@ int main(int argc, char *argv[]) {
       } else if (cmd == "levelup"){
           if (level!=4){
               level++;
+	       gameBoard.levelup();
           }
       } else if (cmd == "leveldown"){
           if (level!=0){
@@ -113,7 +114,6 @@ int main(int argc, char *argv[]) {
         else if (r==8) {b.init(BlockType::L, level);}
         else {b.init(BlockType::O, level);}
       }
-      cout << level << endl;
       if (gameBoard.isEmpty(b)) {
         gameBoard.newBlock(b);
         cout << gameBoard << endl;
@@ -186,7 +186,6 @@ int main(int argc, char *argv[]) {
       gameBoard.clearBlock(b);
       gameBoard.dropBlock(b, level);
       cout << gameBoard << endl;
-      cout<<gameBoard.getCurrScore()<<endl;
     }
   } catch (ios::failure &) {}  // Any I/O failure quits
 }

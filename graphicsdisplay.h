@@ -11,7 +11,9 @@ class Cell;
 class GraphicsDisplay: public Observer<Info, State> {
   const int blockWidth, blockHeight, widthSize, heightSize, recWidthSize, recHeightSize;
   Xwindow xw;
-  	
+  int level = 0;
+  int currScore = 0;	
+  int highScore = 0;
  public:
   GraphicsDisplay();
 

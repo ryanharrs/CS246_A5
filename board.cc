@@ -10,8 +10,8 @@ Board::~Board(){
   delete gd;
 }
 
-void Board::init(){
- 
+void Board::init(int level){
+  currLevel = level;
   delete td;
   td = new TextDisplay;
   delete gd;
@@ -29,6 +29,9 @@ void Board::init(){
   }
 }
 
+void Board::levelup(){
+	currLevel++;
+}
 bool Board::isEmpty(Block &b) {
     for(int idx = 0; idx < 4; idx++) {
       if (b.cellInfo(idx).col > 10) return false;
@@ -115,7 +118,9 @@ void Board::dropBlock(Block &b, int level) {
 		}
 	}
   }
-
+ if(currScore > highScore){
+	highScore = currScore;
+ }
 }
 
 
@@ -124,6 +129,13 @@ void Board::setPiece(size_t r, size_t c, BlockType type, Colour colour) {
 }
 
 std::ostream &operator<<(std::ostream &out, const Board &b){
+  out<<"Level:";
+  out<<std::right<<std::setw(6)<< b.currLevel<<endl;
+  out<<"Score:";
+  out<<std::right<<std::setw(6)<< b.currScore<<endl;
+  out<<"Hi Score:";
+  out<<std::right<<std::setw(3)<< b.highScore<<endl; 
   out << *b.td;
+  
   return out;
 }
