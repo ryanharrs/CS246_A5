@@ -6,7 +6,11 @@ using namespace std;
 
 GraphicsDisplay::GraphicsDisplay():
  blockWidth{11}, blockHeight{18}, widthSize{500}, heightSize{800}, recWidthSize{widthSize/blockWidth}, recHeightSize{heightSize/blockHeight},xw{widthSize, heightSize}{
+  
   xw.fillRectangle(0, 0, widthSize, heightSize, Xwindow::White);
+  //xw.drawString(0,0, levelString);
+  //xw.drawString(0, 10, scoreString);
+  //xw.drawString(0,20, highsScoreString);
 }
 
 
