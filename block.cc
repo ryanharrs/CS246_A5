@@ -59,14 +59,13 @@ void Block::clockwiseRotate(){
 				newRow = blockGrid[idx].getInfo().row;
 				newCol = blockGrid[idx].getInfo().col - 2;
 			}
-			if(blockGrid[idx].getInfo().type == BlockType::J || blockGrid[idx].getInfo().type == BlockType::L){
-				if(rotationVersion %4 == 1){
-					newRow++;
-				}
-				if(rotationVersion %4 == 3){
-					newRow++;
-				}
+			if(rotationVersion %4 == 1){
+				newRow++;
 			}
+			if(rotationVersion %4 == 3){
+				newRow++;
+			}
+			
 			if(newRow < 0 || newRow > 17 || newCol < 0 || newCol > 10){
 				return;
 			}
@@ -135,14 +134,14 @@ void Block::counterClockwiseRotate(){
 				newRow = blockGrid[idx].getInfo().row - 2;
 				newCol = blockGrid[idx].getInfo().col;
 			}
-			if(blockGrid[idx].getInfo().type == BlockType::J || blockGrid[idx].getInfo().type == BlockType::L){
-				if(rotationVersion %4 == 2){
+			
+			if(rotationVersion %4 == 2){
 					newCol--;
-				}
-				if(rotationVersion %4 == 0){
-					newCol--;
-				}
 			}
+			if(rotationVersion %4 == 0){
+				newCol--;
+			}
+			
 			if(newRow < 0 || newRow > 17 || newCol < 0 || newCol > 10){
 				return;
 			}
@@ -175,7 +174,7 @@ void Block::init(BlockType type, int level){
 			blockGrid.emplace_back(newCell);
 		}
 		delete middle;
-		Cell *middleCell = new Cell(3, 4);
+		Cell *middleCell = new Cell(3, 0);
 		middle = middleCell;
 	}
 	if(type == BlockType::J){
@@ -229,6 +228,7 @@ void Block::init(BlockType type, int level){
 		blockGrid.emplace_back(cell4);
 	}
 	if(type == BlockType::T){
+		rotationVersion = 2;
 		Cell cell1(3,0, BlockType::T);
 		Cell cell2(3,1, BlockType::T);
 		Cell cell3(3,2, BlockType::T);

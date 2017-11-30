@@ -10,11 +10,9 @@ class Cell : public Subject<Info, State>, public Observer<Info,State>{
   const size_t r, c;
   BlockType type = BlockType::None;
   Colour colour = Colour::None;
-  int sameBlockCells = 0;
   // Add other private members if necessary
 
  public:
-  int getSameBlockCells();
   Cell(size_t r, size_t c, BlockType type);
   Cell(size_t r, size_t c);
   void setPiece(BlockType getType, Colour getColour);    // Place a piece of given colour here.

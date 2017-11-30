@@ -77,16 +77,10 @@ void Board::checkRows(Block &b, int level){
 				rowsCleared++;
 				for(int j = 0; j < theBoard[i].size(); j++){
 					theBoard[i][j].setPiece(BlockType::None, Colour::None);
-					if(theBoard[i][j].getSameBlockCells() == 3){
-						currScore += b.getBlockLevel();
-					}
 				}
 				for(int k = i; k > 0; k--){
 					for(int l = 0; l < theBoard[k].size(); l++){
 						theBoard[k][l].setPiece(theBoard[k-1][l].getInfo().type, theBoard[k-1][l].getInfo().colour);
-						if(theBoard[k][l].getInfo().colour != Colour::None){
-							theBoard[k][l].copyObservers(&theBoard[k-1][l]);
-						}
 					}
 				}
 			}	
