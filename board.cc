@@ -103,15 +103,6 @@ void Board::dropBlock(Block &b, int level) {
   b.moveUp();
   newBlock(b);
   checkRows(b, level);
-  for(int idx = 0; idx < 4; idx++){
-	int row = b.cellInfo(idx).row;
-	int col = b.cellInfo(idx).col;
-	for(int j = 0; j < 4; j++){
-		if(j != idx){
-			theBoard[row][col].attach(&theBoard[b.cellInfo(j).row][b.cellInfo(j).col]);
-		}
-	}
-  }
  if(currScore > highScore){
 	highScore = currScore;
  }
