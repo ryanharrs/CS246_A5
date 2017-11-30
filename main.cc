@@ -159,7 +159,7 @@ int main(int argc, char *argv[]) {
           if (gameBoard.isEmpty(b)) {
             gameBoard.newBlock(b);
          } else {
-            b.counterclockwiseRotate();
+            b.counterClockwiseRotate();
             gameBoard.newBlock(b);
           }
           cout << cmd << endl;
