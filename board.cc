@@ -20,7 +20,6 @@ void Board::init(int level){
     for (size_t column = 0; column < 11; column++) {
       Cell newCell{row, column};
       newCell.attach(td);
-      newCell.attach(gd);
       theRow.emplace_back(newCell);
     }
     theBoard.emplace_back(theRow);
