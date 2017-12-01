@@ -7,7 +7,6 @@ using namespace std;
 
 Board::~Board(){
   delete td;
-  delete gd;
 }
 
 void Board::init(int level){
