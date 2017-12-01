@@ -22,7 +22,6 @@ class Board {
   int currLevel = 0;
   Observer<Info, State> *ob = nullptr;  // Another observer (intent:  graphics)
   // Add private members, if necessary.
-  GraphicsDisplay *gd = nullptr;
   bool checkIndividualRow(std::vector<Cell> row);
   void checkRows(Block &b, int level);
   int currScore = 0;

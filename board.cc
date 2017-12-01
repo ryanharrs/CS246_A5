@@ -14,8 +14,6 @@ void Board::init(int level){
   currLevel = level;
   delete td;
   td = new TextDisplay;
-  delete gd;
-  gd  = new GraphicsDisplay;
   theBoard.clear();
   for (size_t row = 0; row < 18; row++) {
     vector<Cell> theRow;
