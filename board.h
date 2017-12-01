@@ -1,42 +1,29 @@
 #ifndef __BOARD_H__
 #define __BOARD_H__
-#include <iostream>
-#include <vector>
-#include <iomanip>
-#include <cstddef>
-#include "cell.h"
 #include "block.h"
-#include "state.h"
-#include "info.h"
+#include "boardcell.h"
 #include "textdisplay.h"
+#include "info.h"
 #include "subject.h"
 #include "observer.h"
-#include "graphicsdisplay.h"
-class TextDisplay;
-template <typename InfoType, typename StateType> class Observer;
-class InvalidMove{};
+#include <iostream>
+#include <vector>
+#include <cstddef>
 
 class Board {
-  std::vector<std::vector<Cell>> theBoard;  // The actual grid.
-  TextDisplay *td = nullptr; // The text display.
-  int currLevel = 0;
-  Observer<Info, State> *ob = nullptr;  // Another observer (intent:  graphics)
-  // Add private members, if necessary.
-  bool checkIndividualRow(std::vector<Cell> row);
-  void checkRows(Block &b, int level);
-  int currScore = 0;
-  int highScore = 0;
+  std::vector<std::vector<BoardCell>> theBoard;
+  int score;
+  int hiscore;
+  TextDisplay *td;
+  private: 
+  bool isEmpty(int row, int col);                                           // Checks if cell at given row and column is empty
   public:
-  void levelup();
-  int getCurrScore();
   ~Board();
-  void init(int currLevel); // Sets up an n x n grid.  Clears old grid, if necessary.
-  bool isEmpty(Block &b);
-  void newBlock(Block &b);
-  void clearBlock(Block &b);
-  void dropBlock(Block &b, int level);
-  void setPiece(size_t r, size_t c, BlockType type, Colour colour);  // Plays piece at row r, col c.
- 
+  void init();  
+  void setPiece(int curr_row, int curr_col, Block &b);    
+  bool canPlace(int curr_row, int curr_col, const Block &b);
+  void clearPiece(int curr_row, int curr_col, const Block &b);
+  void clearRows(int currLevel);
   friend std::ostream &operator<<(std::ostream &out, const Board &b);
 };
 

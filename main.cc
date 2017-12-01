@@ -2,13 +2,12 @@
 #include <string>
 // You may include other allowed headers, as needed
 #include "board.h"
-#include "state.h"
-#include "graphicsdisplay.h"
+#include "block.h"
 #include <fstream>
 #include <cstdlib>
 #include <vector>
-#include "block.h"
 #include <ctime>
+#include <iomanip>
 using namespace std;
 
 // Do not remove any code; do not add code other than where indicated.
@@ -17,7 +16,7 @@ int main(int argc, char *argv[]) {
 
   cin.exceptions(ios::eofbit|ios::failbit);
   string cmd;
-  srand(time(NULL));
+  //srand(time(NULL));
   string block;
   int level = 0;
   
@@ -27,7 +26,7 @@ int main(int argc, char *argv[]) {
 
   bool random = 1;
   Board gameBoard;
-  gameBoard.init(level);
+  gameBoard.init();
 
   vector <string> cmds; 
   string a [16]= {"left", "right", "down", "clockwise", "counterclockwise", "drop", "levelup", "leveldown", "norandom", "random", "sequence", "I", "J", "L", "restart", "hint"};
@@ -37,6 +36,7 @@ int main(int argc, char *argv[]) {
   
   try {
     while (true) {
+      int curr_row = 0, curr_col = 0;
       //Figuring out which command was entered
       cout << "Enter a command: ";
       cin >> cmd;
@@ -66,7 +66,6 @@ int main(int argc, char *argv[]) {
       } else if (cmd == "levelup"){
           if (level!=4){
               level++;
-	       gameBoard.levelup();
           }
       } else if (cmd == "leveldown"){
           if (level!=0){
@@ -81,41 +80,42 @@ int main(int argc, char *argv[]) {
           random = 1;
       } else if (cmd == "play") {}
       //Getting a block b
-      Block b;
+      Block *b;
       if ((level==0)||!random){
           //if(f >> block){
            // b.init(block);
           //}
       } else if (level==1){
         int r = rand() % 12 + 1;
-        if (r==1){b.init(BlockType::S, level); }
-        else if (r==2){b.init(BlockType::Z, level);}
-        else if ((r==3)||(r==4)) {b.init(BlockType::T, level);}
-        else if ((r==5)||(r==6)) {b.init(BlockType::I, level);}
-        else if ((r==7)||(r==8)) {b.init(BlockType::J, level);}
-        else if ((r==9)||(r==10)) {b.init(BlockType::L, level);}
-        else {b.init(BlockType::O, level);}
+        if (r==1){ b = new Block {'S', level}; }
+        else if (r==2) { b = new Block {'Z', level};}
+        else if ((r==3)||(r==4)) { b = new Block {'T', level};}
+        else if ((r==5)||(r==6)) { b = new Block {'I', level};}
+        else if ((r==7)||(r==8)) { b = new Block {'J', level};}
+        else if ((r==9)||(r==10)) { b = new Block {'L', level};}
+        else { b = new Block {'O', level}; }
       } else if (level==2){
       int r = rand() % 7 + 1;
-        if (r==1) {b.init(BlockType::S, level); }
-        else if (r==2) {b.init(BlockType::Z, level);}
-        else if (r==3) {b.init(BlockType::T, level);}
-        else if (r==4) {b.init(BlockType::I, level);}
-        else if (r==5) {b.init(BlockType::J, level); }
-        else if (r==6) {b.init(BlockType::L, level);}
-        else {b.init(BlockType::O, level);}
+        if (r==1) { b = new Block {'S', level}; }
+        else if (r==2) { b = new Block {'Z', level};}
+        else if (r==3) { b = new Block {'T', level};}
+        else if (r==4) { b = new Block {'I', level};}
+        else if (r==5) { b = new Block {'J', level};}
+        else if (r==6) { b = new Block {'L', level};}
+        else { b = new Block {'O', level}; }
       } else {
         int r = rand() % 9 + 1;
-        if ((r==1)||(r==2)){b.init(BlockType::S, level); }
-        else if ((r==3)||(r==4)) {b.init(BlockType::Z, level);}
-        else if (r==5) {b.init(BlockType::T, level);}
-        else if (r==6) {b.init(BlockType::I, level);}
-        else if (r==7) {b.init(BlockType::J, level); }
-        else if (r==8) {b.init(BlockType::L, level);}
-        else {b.init(BlockType::O, level);}
+        if ((r==1)||(r==2)) { b = new Block {'S', level}; }
+        else if ((r==3)||(r==4)) { b = new Block {'Z', level};}
+        else if (r==5) { b = new Block {'T', level};}
+        else if (r==6) { b = new Block {'I', level};}
+        else if (r==7) { b = new Block {'J', level};}
+        else if (r==8) { b = new Block {'L', level};}
+        else { b = new Block {'O', level}; }
       }
-      if (gameBoard.isEmpty(b)) {
-        gameBoard.newBlock(b);
+      if (gameBoard.canPlace(curr_row, curr_col, *b)) {
+        gameBoard.setPiece(curr_row, curr_col, *b);
+        cout << "Level:" << setw(7) << level << endl;
         cout << gameBoard << endl;
       } else {
         cout << "You Lose" << endl;
@@ -126,65 +126,54 @@ int main(int argc, char *argv[]) {
       cout << endl;
     //"Play" Commands (in the game - require a new block)
       while (cmd != "drop") {
-        gameBoard.clearBlock(b);
+        gameBoard.clearPiece(curr_row, curr_col, *b);
         if (cmd == "left") {
-          b.moveLeft();
-          if (gameBoard.isEmpty(b)) {
-            gameBoard.newBlock(b);
+          --curr_col;
+          if (gameBoard.canPlace(curr_row, curr_col, *b)) {
+            gameBoard.setPiece(curr_row, curr_col, *b);
           } else {
-            b.moveRight();
-            gameBoard.newBlock(b);
+            ++curr_col;
+            gameBoard.setPiece(curr_row, curr_col, *b);
           }
-          cout << cmd << endl;
         } else if (cmd == "right"){
-          b.moveRight();
-          if (gameBoard.isEmpty(b)) {
-            gameBoard.newBlock(b);
-         } else {
-            b.moveLeft();
-            gameBoard.newBlock(b);
+          ++curr_col;
+          if (gameBoard.canPlace(curr_row, curr_col, *b)) {
+            gameBoard.setPiece(curr_row, curr_col, *b);
+          } else {
+            --curr_col;
+            gameBoard.setPiece(curr_row, curr_col, *b);
           }
-          cout << cmd << endl;
-        } else if (cmd == "down"){
-          b.moveDown();
-          if (gameBoard.isEmpty(b)) {
-            gameBoard.newBlock(b);
-         } else {
-            b.moveUp();
-            gameBoard.newBlock(b);
+        } else if (cmd == "clockwise"){
+          b->clockwise();
+          if (gameBoard.canPlace(curr_row, curr_col, *b)) {
+            gameBoard.setPiece(curr_row, curr_col, *b);
+          } else {
+            b->counter_clockwise();
+            gameBoard.setPiece(curr_row, curr_col, *b);
           }
-          cout << cmd << endl;
-       }else if (cmd == "clockwise"){
-	          b.clockwiseRotate();
-          if (gameBoard.isEmpty(b)) {
-            gameBoard.newBlock(b);
-         } else {
-            b.counterClockwiseRotate();
-            gameBoard.newBlock(b);
-          }
-          cout << cmd << endl;
         } else if (cmd == "counterclockwise"){
-	        b.counterClockwiseRotate();
-          if (gameBoard.isEmpty(b)) {
-            gameBoard.newBlock(b);
-         } else {
-            b.clockwiseRotate();
-            gameBoard.newBlock(b);
+          b->counter_clockwise();
+          if (gameBoard.canPlace(curr_row, curr_col, *b)) {
+            gameBoard.setPiece(curr_row, curr_col, *b);
+          } else {
+            b->clockwise();
+            gameBoard.setPiece(curr_row, curr_col, *b);
           }
-
-          cout << cmd << endl;
         } else if (cmd == "drop"){
-    	  cout<<"youre a wizard harry"<<endl;
           break;
-          cout << cmd << endl;
         }
+        cout << "Level:" << setw(7) << level << endl;
         cout << gameBoard << endl;
         cout << "Enter move: ";
         cin >> cmd;
         cout << endl;
       }
-      gameBoard.clearBlock(b);
-      gameBoard.dropBlock(b, level);
+      gameBoard.clearPiece(curr_row, curr_col, *b);
+      while (gameBoard.canPlace(curr_row, curr_col, *b)) ++curr_row;
+      --curr_row;
+      gameBoard.setPiece(curr_row, curr_col, *b);
+      gameBoard.clearRows(level);
+      cout << "Level:" << setw(7) << level << endl;
       cout << gameBoard << endl;
     }
   } catch (ios::failure &) {}  // Any I/O failure quits

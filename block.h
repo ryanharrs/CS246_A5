@@ -1,31 +1,21 @@
 #ifndef __BLOCK_H__
 #define __BLOCK_H__
 #include <vector>
-#include "state.h"
-#include "info.h"
-#include "cell.h"
-#include "graphicsdisplay.h"
-template <typename InfoType, typename StateType> class Observer;
+#include "blockcell.h"
 
 class Block {
-	std::vector<Cell> blockGrid;
-	Cell *middle = nullptr;
-	void updateBlockRows();
-	int blockLevel;
-	bool findNum(std::vector<int> row, int j);
-	int rotationVersion = 0;
+	std::vector<BlockCell> blockGrid;
+	int position;
+	int level;
+	int pieces;
  	public:
-	int getBlockLevel();
-	std::vector<int> blockRows;
-	void clockwiseRotate();
-	void counterClockwiseRotate();
-	void init(BlockType type, int level);
-	Info cellInfo(int idx);
-	bool canPlace();
-	void moveRight();
-	void moveLeft();
-	void moveDown();
-	void moveUp();
+	Block(char type, int currLevel);
+	BlockCell getCell(int idx) const;
+	void clockwise();
+	void counter_clockwise();
+	int getLevel();
+	int numPieces();
+	void decPieces();
 	~Block();
 };
 

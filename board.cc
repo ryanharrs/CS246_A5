@@ -1,122 +1,99 @@
 #include "board.h"
 #include <iostream>
-
 #include <cstddef>
+#include <iomanip>
 #undef None
 using namespace std;
 
-Board::~Board(){
+// Private methods
+bool Board::isEmpty(int row, int col) {
+  if (row < 0) return false;
+  if (row > 17) return false;
+  if (col < 0) return false;
+  if (col > 10) return false;
+  if (theBoard[row][col].getInfo().type == ' ') return true;
+  return false;
+}
+
+// Public methods
+Board::~Board() {
   delete td;
 }
 
-void Board::init(int level){
-  currLevel = level;
-  delete td;
-  td = new TextDisplay;
+void Board::init() {
   theBoard.clear();
-  for (size_t row = 0; row < 18; row++) {
-    vector<Cell> theRow;
-    for (size_t column = 0; column < 11; column++) {
-      Cell newCell{row, column};
-      newCell.attach(td);
-      theRow.emplace_back(newCell);
+  score = 0;
+  hiscore = 0;
+  td = new TextDisplay;
+  for (int row = 0; row < 18; row ++) {
+    vector<BoardCell> theRow;
+    for (int col = 0; col < 11; col ++) {
+      BoardCell bc{row, col, ' '};
+      bc.attach(td);
+      theRow.emplace_back(bc);
     }
     theBoard.emplace_back(theRow);
   }
 }
 
-void Board::levelup(){
-	currLevel++;
+bool Board::canPlace(int curr_row, int curr_col, const Block &b) {
+  for (int idx = 0; idx < 4; idx++) {
+    if (!isEmpty(b.getCell(idx).row + curr_row, b.getCell(idx).col + curr_col)) return false;
+  }
+  return true;
 }
-bool Board::isEmpty(Block &b) {
-    for(int idx = 0; idx < 4; idx++) {
-      if (b.cellInfo(idx).col > 10) return false;
-      if (b.cellInfo(idx).col < 0) return false;
-      if (b.cellInfo(idx).row > 17) return false;
-      if (theBoard[b.cellInfo(idx).row][b.cellInfo(idx).col].getInfo().type != BlockType::None) {
-        return false;
+
+void Board::setPiece(int curr_row, int curr_col, Block &b) {
+  for (int idx = 0; idx < 4; idx++) {
+    theBoard[curr_row + b.getCell(idx).row][curr_col + b.getCell(idx).col].setType(b.getCell(idx).type);
+    theBoard[curr_row + b.getCell(idx).row][curr_col + b.getCell(idx).col].setBP(&b);
+  }
+}
+
+void Board::clearPiece (int curr_row, int curr_col, const Block &b) {
+  for (int idx = 0; idx < 4; idx++) {
+    theBoard[curr_row + b.getCell(idx).row][curr_col + b.getCell(idx).col].setType(' ');
+    theBoard[curr_row + b.getCell(idx).row][curr_col + b.getCell(idx).col].setBP(nullptr);
+  }
+}
+
+void Board::clearRows(int currLevel) {
+  bool fullRow = true;
+  int linesCleared = 0;
+  for (int row = 17; row >= 3; row--) {
+    for (int col = 0; col < 11; col++) {
+      if (theBoard[row][col].getInfo().type == ' ') {
+        fullRow = false;
+        break;
       }
     }
-    return true;
-}
-
-void Board::newBlock(Block &b) {
-  for (int idx = 0; idx < 4; idx++) {
-    setPiece(b.cellInfo(idx).row, b.cellInfo(idx).col, b.cellInfo(idx).type, b.cellInfo(idx).colour);
-   }
-}
-
-void Board::clearBlock(Block &b) {
-  for (int idx = 0; idx < 4; idx++) {
-    setPiece(b.cellInfo(idx).row, b.cellInfo(idx).col, BlockType::None, b.cellInfo(idx).colour);
+    if (fullRow) {
+      for (int col = 0; col < 11; col++) {
+        if (theBoard[row][col].getInfo().bp->numPieces() == 1) {
+          score += (theBoard[row][col].getInfo().bp->getLevel() + 1) * (theBoard[row][col].getInfo().bp->getLevel() + 1);
+          if (score > hiscore) hiscore = score;
+          theBoard[row][col].delBP();
+        } else {
+          theBoard[row][col].getInfo().bp->decPieces();
+        }
+      }
+      for (int row = 17; row >= 3; row --) {
+        for (int col = 0; col < 11; col++) {
+          theBoard[row][col].setType(theBoard[row-1][col].getInfo().type);
+          theBoard[row][col].setBP(theBoard[row-1][col].getInfo().bp);
+        }
+      }
+      ++row;
+      ++linesCleared;
+    }
   }
-}
-
-
-
-bool Board::checkIndividualRow(vector<Cell> row){
-	for(int i = 0; i < row.size(); i++){
-		if(row[i].getInfo().type == BlockType::None){
-			return false;
-		}
-	}
-	return true;
-}
-
-
-void Board::checkRows(Block &b, int level){
-	int rowsCleared = 0;
-  	for(int q = 0; q < b.blockRows.size(); q++){
-		int i = b.blockRows[q];
-		if(i >=0){	
-			if(checkIndividualRow(theBoard[i]) == true){
-				rowsCleared++;
-				for(int j = 0; j < theBoard[i].size(); j++){
-					theBoard[i][j].setPiece(BlockType::None, Colour::None);
-				}
-				for(int k = i; k > 0; k--){
-					for(int l = 0; l < theBoard[k].size(); l++){
-						theBoard[k][l].setPiece(theBoard[k-1][l].getInfo().type, theBoard[k-1][l].getInfo().colour);
-					}
-				}
-			}	
-		}
-		
-	}
-	if(rowsCleared > 0){
-		currScore += ((level + rowsCleared) * (level + rowsCleared));
-	}
-}
-int Board::getCurrScore(){
-	return currScore;
-}
-
-
-void Board::dropBlock(Block &b, int level) {
-  while (isEmpty(b)) {
-      b.moveDown();
-  }
-  b.moveUp();
-  newBlock(b);
-  checkRows(b, level);
- if(currScore > highScore){
-	highScore = currScore;
- }
-}
-
-
-void Board::setPiece(size_t r, size_t c, BlockType type, Colour colour) {
-  theBoard[r][c].setPiece(type, colour);
+  score += (currLevel + linesCleared) * (currLevel + linesCleared);
+  if (score > hiscore) hiscore = score;
 }
 
 std::ostream &operator<<(std::ostream &out, const Board &b){
-  out<<"Level:";
-  out<<std::right<<std::setw(6)<< b.currLevel<<endl;
-  out<<"Score:";
-  out<<std::right<<std::setw(6)<< b.currScore<<endl;
-  out<<"Hi Score:";
-  out<<std::right<<std::setw(3)<< b.highScore<<endl; 
+  out << "Score:" << setw(7) << b.score << std::endl;
+  out << "Hi Score:" << setw(4) << b.hiscore << std::endl;
   out << *b.td;
-  
   return out;
 }

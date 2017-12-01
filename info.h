@@ -1,12 +1,12 @@
 #ifndef __INFO_H__
 #define __INFO_H__
 #include <cstddef>
-#include "state.h"
+#include "block.h"
 
 struct Info {
-  size_t row, col;
-  Colour colour;
-  BlockType type;
+  int row, col;
+  char type;
+  Block *bp;
 };
 
 #endif

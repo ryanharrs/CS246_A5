@@ -3,18 +3,15 @@
 #include <iostream>
 #include <vector>
 #include "observer.h"
-#include "state.h"
 #include "info.h"
 #include "subject.h"
-class Cell;
 
-class TextDisplay: public Observer<Info, State> {
+class TextDisplay: public Observer<Info> {
   std::vector<std::vector<char>> theDisplay;
-  const int gridSize;
  public:
   TextDisplay();
 
-  void notify(Subject<Info, State> &whoNotified) override;
+  void notify(Subject<Info> &whoNotified) override;
 
   friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
 };

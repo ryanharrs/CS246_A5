@@ -1,11 +1,8 @@
 #include "textdisplay.h"
 #include <iostream>
-#include "observer.h"
-#include "state.h"
-#include "info.h"
 using namespace std;
 
-TextDisplay::TextDisplay():gridSize{18} {
+TextDisplay::TextDisplay() {
 	theDisplay.clear();
 	for(int row = 0; row < 18; row++){
 		vector<char>newRow;
@@ -16,20 +13,20 @@ TextDisplay::TextDisplay():gridSize{18} {
 	}
 }
 
-void TextDisplay::notify(Subject<Info, State> &whoNotified){
-	if (whoNotified.getInfo().type == BlockType::None) {
+void TextDisplay::notify(Subject<Info> &whoNotified){
+	if (whoNotified.getInfo().type == ' ') {
 		theDisplay[whoNotified.getInfo().row][whoNotified.getInfo().col] = ' ';
-	} else if (whoNotified.getInfo().type == BlockType::I) {
+	} else if (whoNotified.getInfo().type == 'I') {
 		theDisplay[whoNotified.getInfo().row][whoNotified.getInfo().col] = 'I';
-	} else if (whoNotified.getInfo().type == BlockType::J) {
+	} else if (whoNotified.getInfo().type == 'J') {
 		theDisplay[whoNotified.getInfo().row][whoNotified.getInfo().col] = 'J';
-	} else if (whoNotified.getInfo().type == BlockType::L) {
+	} else if (whoNotified.getInfo().type == 'L') {
 		theDisplay[whoNotified.getInfo().row][whoNotified.getInfo().col] = 'L';
-	} else if (whoNotified.getInfo().type == BlockType::O) {
+	} else if (whoNotified.getInfo().type == 'O') {
 		theDisplay[whoNotified.getInfo().row][whoNotified.getInfo().col] = 'O';
-	} else if (whoNotified.getInfo().type == BlockType::S) {
+	} else if (whoNotified.getInfo().type == 'S') {
 		theDisplay[whoNotified.getInfo().row][whoNotified.getInfo().col] = 'S';
-	} else if (whoNotified.getInfo().type == BlockType::Z) {
+	} else if (whoNotified.getInfo().type == 'Z') {
 		theDisplay[whoNotified.getInfo().row][whoNotified.getInfo().col] = 'Z';
 	} else {
 		theDisplay[whoNotified.getInfo().row][whoNotified.getInfo().col] = 'T';
