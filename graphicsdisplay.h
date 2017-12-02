@@ -9,7 +9,7 @@
 class Cell;
 
 class GraphicsDisplay: public Observer<Info, State> {
-  const int blockWidth, blockHeight, widthSize, heightSize, recWidthSize, recHeightSize;
+  const int blockWidth, blockHeight, widthSize, heightSize, sidePanelWidth, recWidthSize, recHeightSize;
   Xwindow xw;
   int level = 0;
   int currScore = 0;	
