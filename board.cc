@@ -36,6 +36,42 @@ void Board::init() {
   }
 }
 
+Info Board::hint(const Block&b){
+	Block hintBlock(b.type, level, true);
+	int hintRotation = 0;
+	int hintCol = 0;
+	int hintRow = 0;
+	int currRow;
+	int magicNum = 18 * 4;
+	for(int i = 0; i < 11; i++){
+		for(int r = 0; r < 4; r++){
+			int currMagicNum = 0;
+			currRow = 0;
+			while(canPlace(currRow, i, hintBlock){
+				currRow++;
+			}
+			currRow--;
+			for(int idx = 0; idx < 4; idx++){
+				currMagicNum += (hintBlock.getCell(idx).row + curr_row);
+			}
+			if(currMagicNum < magicNum){
+				magicNum = currMagicNum;
+				hintCol = i;
+				hintRotation = r;
+				hintRow = currRow;
+			}
+			b.clockwise();
+		}
+		
+	}
+	while(hintRotation != 0){
+		b.counterclcokwise();
+		hintRotation--;
+	}
+	return {hintRow, hintCol, b.type, b};	
+
+}
+
 bool Board::canPlace(int curr_row, int curr_col, const Block &b) {
   for (int idx = 0; idx < 4; idx++) {
     if (!isEmpty(b.getCell(idx).row + curr_row, b.getCell(idx).col + curr_col)) return false;

@@ -125,7 +125,9 @@ int main(int argc, char *argv[]) {
       cin >> cmd;
       cout << endl;
     //"Play" Commands (in the game - require a new block)
+	bool hintPlaced = false;
       while (cmd != "drop") {
+	
         gameBoard.clearPiece(curr_row, curr_col, *b);
         if (cmd == "left") {
           --curr_col;
@@ -134,6 +136,11 @@ int main(int argc, char *argv[]) {
           } else {
             ++curr_col;
             gameBoard.setPiece(curr_row, curr_col, *b);
+          }
+        } else if (cmd == "hint"){
+		Block *hintBlock = new Block{b.type, level, true};          
+		hintPlaced = true;
+
           }
         } else if (cmd == "right"){
           ++curr_col;
@@ -169,6 +176,9 @@ int main(int argc, char *argv[]) {
         cout << endl;
       }
       gameBoard.clearPiece(curr_row, curr_col, *b);
+	if(hintPlaced == true){
+      		gameBoard.clearPiece(hint_row, hint_col, *hintBlock);
+	}
       while (gameBoard.canPlace(curr_row, curr_col, *b)) ++curr_row;
       --curr_row;
       gameBoard.setPiece(curr_row, curr_col, *b);

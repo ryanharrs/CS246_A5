@@ -8,7 +8,10 @@ class Block {
 	int position;
 	int level;
 	int pieces;
+	bool isHint;
  	public:
+	bool getIfHint();
+	Block(char type, int currLevel, bool isHintVar);
 	Block(char type, int currLevel);
 	BlockCell getCell(int idx) const;
 	void clockwise();
