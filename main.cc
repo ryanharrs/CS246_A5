@@ -120,7 +120,6 @@ int main(int argc, char *argv[]) {
 
 
   string cmd;
-  //srand(time(NULL));
   string block;
   bool newblock = 1;
   bool random = 1;
@@ -134,14 +133,19 @@ int main(int argc, char *argv[]) {
   //Figuring out which cmd line args were entered
   for (int i = 1; i<argc-1; i++){
         string s = argv[i];
-        if(s == "-text"){gameBoard.showGraphicsDisplay = false;}
-	else if (s=="-seed"){ seed = 1;}
+        if(s == "-text"){gameBoard.showGraphicsDisplay = false;
+        } else if (s=="-seed"){ 
+          istringstream iss(argv[i+1]);
+          int seed;
+          iss>>seed;
+          srand(seed);
+        }
         else if (s=="-scriptfile"){
         scriptfile = argv[i+1];
         } else if (s=="-startlevel"){
           istringstream iss(argv[i+1]);
           int n;
-          if (iss>>n);
+          iss>>n;
           if (n==1||n==2||n==3||n==4){ 
             level = n;
             gameBoard.setLevel(level);
@@ -394,13 +398,6 @@ int main(int argc, char *argv[]) {
         printBlock(next->getCell(0).type);
       }
       if (done==0) break;
-      //gameBoard.clearPiece(curr_row, curr_col, *b);
-      //while (gameBoard.canPlace(curr_row, curr_col, *b)) ++curr_row;
-      //--curr_row;
-      //gameBoard.setPiece(curr_row, curr_col, *b);
-      //gameBoard.clearRows(level);
-      //cout << "Level:" << setw(7) << level << endl;
-     // cout << gameBoard << endl;
     }
   } catch (ios::failure &) {}  // Any I/O failure quits 
 }
