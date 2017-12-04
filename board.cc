@@ -113,10 +113,10 @@ void Board::clearRows(int currLevel) {
           theBoard[row][col].getInfo().bp->decPieces();
         }
       }
-      for (int row = 17; row >= 3; row --) {
+      for (int r = row; r >= 3; r --) {
         for (int col = 0; col < 11; col++) {
-          theBoard[row][col].setType(theBoard[row-1][col].getInfo().type);
-          theBoard[row][col].setBP(theBoard[row-1][col].getInfo().bp);
+          theBoard[r][col].setType(theBoard[r-1][col].getInfo().type);
+          theBoard[r][col].setBP(theBoard[r-1][col].getInfo().bp);
         }
       }
       ++row;
