@@ -9,18 +9,18 @@ class Block {
 	int level;
 	int pieces;
 	bool isHint;
-	char blockType = 'O';
+	char blockType;
  	public:
-	char getType();
-	bool getIfHint();
-	Block(char type, int currLevel, bool isHintVar);
 	Block(char type, int currLevel);
+	Block(char type, int currLevel, bool isHintVar);
 	BlockCell getCell(int idx) const;
 	void clockwise();
 	void counter_clockwise();
 	int getLevel();
-	int numPieces();
+	int numPieces() const;
 	void decPieces();
+	char getType();
+	bool getIfHint();
 	~Block();
 };
 

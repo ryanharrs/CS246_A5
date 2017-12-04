@@ -20,101 +20,68 @@ Board::~Board() {
   delete td;
 }
 
-void Board::init() {
+void Board::init(int currLevel) {
   theBoard.clear();
+  level = currLevel;
   score = 0;
   hiscore = 0;
   td = new TextDisplay;
-  if(showGraphicsDisplay == true){
-	gd = new GraphicsDisplay;
- }
   for (int row = 0; row < 18; row ++) {
     vector<BoardCell> theRow;
     for (int col = 0; col < 11; col ++) {
       BoardCell bc{row, col, ' '};
-      bc.attach(td);
-      bc.attach(gd);
       theRow.emplace_back(bc);
+      theRow[col].attach(td);
     }
     theBoard.emplace_back(theRow);
   }
 }
 
-Info Board::hint(Block&b){
-	int hintRotation = 0;
-	int hintCol = 0;
-	int hintRow = 0;
-	int currRow;
-	int magicNum = 0;
-	for(int i = 0; i < 11; i++){
-		for(int r = 0; r < 4; r++){
-			if(canPlace(0,i, b) == true){
-				int currMagicNum = 0;
-				currRow = 0;
-				while(canPlace(currRow, i, b) == true){
-					currRow++;
-				}
-				currRow--;
-				for(int idx = 0; idx < 4; idx++){
-					currMagicNum += (b.getCell(idx).row + currRow);
-				}
-		
-				if(currMagicNum > magicNum){
-					magicNum = currMagicNum;
-					hintCol = i;
-					hintRotation = r;
-					hintRow = currRow;
-				}
-			}
-		b.clockwise();
-		}
-	}
-	while(hintRotation != 0){
-		b.clockwise();
-		hintRotation--;
-	}
-	Block *forInfo = &b;
-	return {hintRow, hintCol, b.getType(), forInfo};	
-
+void Board::setLevel(int currLevel) {
+  level = currLevel;
 }
 
-bool Board::canPlace(int curr_row, int curr_col, const Block &b) {
- 
- if(curr_row > 17 || curr_col < 0  || curr_col > 10){
-	return false;
- }
-
- for (int idx = 0; idx < 4; idx++) {
-    if (!isEmpty(b.getCell(idx).row + curr_row, b.getCell(idx).col + curr_col)) return false;
+bool Board::canPlace(int curr_row, int curr_col, const shared_ptr<Block> &b) {
+  for (int idx = 0; idx < b->numPieces(); idx++) {
+    if (!isEmpty(b->getCell(idx).row + curr_row, b->getCell(idx).col + curr_col)) return false;
   }
-
   return true;
 }
 
-void Board::setPiece(int curr_row, int curr_col, Block &b) {
-	if(b.getIfHint() == true){
- 		for (int idx = 0; idx < 4; idx++) {
-  			theBoard[curr_row + b.getCell(idx).row][curr_col + b.getCell(idx).col].setType('?');
-  			theBoard[curr_row + b.getCell(idx).row][curr_col + b.getCell(idx).col].setBP(&b);
-  		}
-
-	} 
-	else{
-		for (int idx = 0; idx < 4; idx++) {
-  		theBoard[curr_row + b.getCell(idx).row][curr_col + b.getCell(idx).col].setType(b.getCell(idx).type);
-   		theBoard[curr_row + b.getCell(idx).row][curr_col + b.getCell(idx).col].setBP(&b);
-  		}	
-	}
-}	
-
-void Board::clearPiece (int curr_row, int curr_col, const Block &b) {
-  for (int idx = 0; idx < 4; idx++) {
-    theBoard[curr_row + b.getCell(idx).row][curr_col + b.getCell(idx).col].setType(' ');
-    theBoard[curr_row + b.getCell(idx).row][curr_col + b.getCell(idx).col].setBP(nullptr);
+void Board::setPiece(int curr_row, int curr_col, shared_ptr<Block> &b) {
+  if (b->getIfHint() == true){
+    if(b->getIfHint() == true){
+      for (int idx = 0; idx < 4; idx++) {
+        theBoard[curr_row + b->getCell(idx).row][curr_col + b->getCell(idx).col].setType('?');
+        theBoard[curr_row + b->getCell(idx).row][curr_col + b->getCell(idx).col].setSP(b);
+      }
+    } 
+  } else {
+    for (int idx = 0; idx < b->numPieces(); idx++) {
+      theBoard[curr_row + b->getCell(idx).row][curr_col + b->getCell(idx).col].setType(b->getCell(idx).type);
+      theBoard[curr_row + b->getCell(idx).row][curr_col + b->getCell(idx).col].setSP(b);
+    }
   }
 }
 
-void Board::clearRows(int currLevel) {
+void Board::clearPiece (int curr_row, int curr_col, const shared_ptr<Block> &b) {
+  for (int idx = 0; idx < b->numPieces(); idx++) {
+    theBoard[curr_row + b->getCell(idx).row][curr_col + b->getCell(idx).col].setType(' ');
+    theBoard[curr_row + b->getCell(idx).row][curr_col + b->getCell(idx).col].clearSP();
+  }
+}
+
+void Board::placeSplit (shared_ptr<Block> &b) {
+  int col = 5;
+  for (int row = 17; row >= 3; row--) {
+    if (canPlace(row, col, b)) {
+      setPiece(row, col, b);
+      break;
+    }
+  }
+}
+
+bool Board::clearRows() {
   bool fullRow = true;
   int linesCleared = 0;
   for (int row = 17; row >= 3; row--) {
@@ -129,29 +96,74 @@ void Board::clearRows(int currLevel) {
         if (theBoard[row][col].getInfo().bp->numPieces() == 1) {
           score += (theBoard[row][col].getInfo().bp->getLevel() + 1) * (theBoard[row][col].getInfo().bp->getLevel() + 1);
           if (score > hiscore) hiscore = score;
-          theBoard[row][col].delBP();
+          theBoard[row][col].clearSP();
         } else {
           theBoard[row][col].getInfo().bp->decPieces();
         }
       }
-      for (int r = row; r >= 3; r --) {
+      for (int r = row; row >= 3; r --) {
         for (int col = 0; col < 11; col++) {
-          theBoard[r][col].setType(theBoard[r-1][col].getInfo().type);
-          theBoard[r][col].setBP(theBoard[r-1][col].getInfo().bp);
+          shared_ptr<Block> copy = theBoard[row-1][col].getInfo().bp;
+          theBoard[row][col].setType(theBoard[row-1][col].getInfo().type);
+          theBoard[row][col].setSP(copy);
         }
       }
       ++row;
       ++linesCleared;
     }
-   fullRow = true;
+    fullRow = true;
   }
-  score += (currLevel + linesCleared) * (currLevel + linesCleared);
-  if (score > hiscore) hiscore = score;
+  if (linesCleared > 0) { 
+    score += (level + linesCleared) * (level + linesCleared);
+    if (score > hiscore) hiscore = score;
+    return true;
+  } else {
+    return false;
+  }
+}
+
+Info Board::hint(shared_ptr<Block> &b){
+  int hintRotation = 0;
+  int hintCol = 0;
+  int hintRow = 0;
+  int currRow;
+  int magicNum = 0;
+  b->getCell(0).row;
+  for(int i = 0; i < 11; i++){
+    for(int r = 0; r < 4; r++){
+      if(canPlace(0,i, b) == true){
+        int currMagicNum = 0;
+        currRow = 0;
+        while(canPlace(currRow, i, b) == true){
+          currRow++;
+        }
+        currRow--;
+        for(int idx = 0; idx < 4; idx++){
+          currMagicNum += (b->getCell(idx).row + currRow);
+        }
+    
+        if(currMagicNum > magicNum){
+          magicNum = currMagicNum;
+          hintCol = i;
+          hintRotation = r;
+          hintRow = currRow;
+        }
+      }
+    b->clockwise();
+    }
+  }
+  while(hintRotation != 0){
+    b->clockwise();
+    hintRotation--;
+  }
+  return {hintRow, hintCol, b->getType(), b};  
+
 }
 
 std::ostream &operator<<(std::ostream &out, const Board &b){
-  out << "Score:" << setw(7) << b.score << std::endl;
-  out << "Hi Score:" << setw(4) << b.hiscore << std::endl;
+  out << "Level:" << setw(6) << b.level << endl;
+  out << "Score:" << setw(6) << b.score << endl;
+  out << "Hiscore:" << setw(4) << b.hiscore << endl;
   out << *b.td;
   return out;
 }
