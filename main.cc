@@ -129,6 +129,8 @@ int main(int argc, char *argv[]) {
 
 //bool's for cmd line args
   bool seed = 0;
+  bool startlevel = false; 
+
   string scriptfile = argv[argc-1];
   //Figuring out which cmd line args were entered
   for (int i = 1; i<argc-1; i++){
@@ -150,6 +152,7 @@ int main(int argc, char *argv[]) {
             level = n;
             gameBoard.setLevel(level);
           }
+          if (n!=0){ startlevel = true;}
         }
   }
   gameBoard.init(level); // initalizing gamebaord
@@ -158,15 +161,25 @@ int main(int argc, char *argv[]) {
       isHeavy = true;
        construct = true;
       }
-  ifstream f {scriptfile};
+  vector <string> cmds2;  
+if (startlevel != true){
+	ifstream f {scriptfile};
+	string tt;
+        cmds2.clear();
+        while(f>>tt){
+          cmds2.insert(cmds2.begin(), tt);
+        }
+}
 
   string s;     //name of initial file
   string s2;    //name of non random file
-  f>>s;
+  if (startlevel != true){
+  	s = cmds2.back();
+  	cmds2.pop_back();
+} else { s = "";}
   shared_ptr<Block> b = getblock(s, level, random);
   shared_ptr<Block> next;
-
-  vector <string> cmds2;        //cmds from norandom
+      //cmds from norandom
   vector <string> cmds3;
   try {
     while (done!=0) {
@@ -182,9 +195,7 @@ int main(int argc, char *argv[]) {
         blockMove = false;
         blockDrop = false;
         string str;
-        if (level==0){
-          if(!(f>>str)) done--;
-        } else if (random == 0){
+        if ((level==0)||(random==0)){
           if (!cmds2.empty()){
             str = cmds2.back();
             cmds2.pop_back();
@@ -198,7 +209,7 @@ int main(int argc, char *argv[]) {
         if (done>1){
           next = getblock(str, level, random);
         }
-        hintBlock = make_shared<Block>(b->getType(), level, true);
+        hintBlock = make_shared<Block>(b->getCell(0).type, level, true);
         hintInfo = gameBoard.hint(hintBlock);
         //If new block can be placed
         if (gameBoard.canPlace(curr_row, curr_col, b)) {
@@ -248,8 +259,33 @@ int main(int argc, char *argv[]) {
       }
       //Commands that don't need a block
       if (cmd=="restart"){
-          //g.init(n);
-          //cout<<g;
+	gameBoard.init(level);
+	string str;
+        ifstream f {scriptfile};
+        string tt;
+        cmds2.clear();
+        while(f>>tt){
+          cmds2.insert(cmds2.begin(), tt);
+        }
+	if ((level==0)||(random==0)){
+	    if (!cmds2.empty()){
+            str = cmds2.back();
+            cmds2.pop_back();
+           } else {
+            cout << "No more commands" << endl;
+            done--;
+          }
+	} else {
+		str = "";
+	}
+	b = getblock(str, level, random);
+	// printing the block
+          gameBoard.setPiece(curr_row, curr_col, b);
+          cout << gameBoard << endl;
+          cout << "Next: " << endl;
+          if (done>1) {
+            printBlock(next->getCell(0).type);
+          } else { cout << endl << endl;}
       } else if (cmd == "levelup"){
         if (level!=4){
           level++;
@@ -390,7 +426,6 @@ int main(int argc, char *argv[]) {
           }
         }
       }
-      cout << noClear << endl;
 
       if (newblock==0){
         cout << gameBoard << endl;

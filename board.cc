@@ -105,7 +105,7 @@ bool Board::clearRows() {
           theBoard[row][col].getInfo().bp->decPieces();
         }
       }
-      for (int r = row; row >= 3; r --) {
+      for (int r = row; r >= 3; r --) {
         for (int col = 0; col < 11; col++) {
           shared_ptr<Block> copy = theBoard[r-1][col].getInfo().bp;
           theBoard[r][col].setType(theBoard[r-1][col].getInfo().type);
