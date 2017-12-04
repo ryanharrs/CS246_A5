@@ -26,12 +26,16 @@ void Board::init(int currLevel) {
   score = 0;
   hiscore = 0;
   td = new TextDisplay;
+  if(showGraphicsDisplay == true){
+  gd = new GraphicsDisplay;
+}
   for (int row = 0; row < 18; row ++) {
     vector<BoardCell> theRow;
     for (int col = 0; col < 11; col ++) {
       BoardCell bc{row, col, ' '};
       theRow.emplace_back(bc);
       theRow[col].attach(td);
+      theRow[col].attach(gd); 	
     }
     theBoard.emplace_back(theRow);
   }

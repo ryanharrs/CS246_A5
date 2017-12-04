@@ -117,7 +117,7 @@ int main(int argc, char *argv[]) {
   Info hintInfo;
   // Initialization of the board
   Board gameBoard;
-  gameBoard.init(level);
+
 
   string cmd;
   //srand(time(NULL));
@@ -134,7 +134,8 @@ int main(int argc, char *argv[]) {
   //Figuring out which cmd line args were entered
   for (int i = 1; i<argc-1; i++){
         string s = argv[i];
-        if (s=="-seed"){ seed = 1;}
+        if(s == "-text"){gameBoard.showGraphicsDisplay = false;}
+	else if (s=="-seed"){ seed = 1;}
         else if (s=="-scriptfile"){
         scriptfile = argv[i+1];
         } else if (s=="-startlevel"){
@@ -142,17 +143,17 @@ int main(int argc, char *argv[]) {
           int n;
           if (iss>>n);
           if (n==1||n==2||n==3||n==4){ 
-            if (n==3) isHeavy = true;
-            if (n==4) {
-              isHeavy = true;
-              construct = true;
-            }
             level = n;
             gameBoard.setLevel(level);
           }
         }
   }
-
+  gameBoard.init(level); // initalizing gamebaord
+  if (level==3) isHeavy = true;
+  if (level==4) {
+      isHeavy = true;
+       construct = true;
+      }
   ifstream f {scriptfile};
 
   string s;     //name of initial file

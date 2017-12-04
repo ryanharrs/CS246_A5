@@ -6,6 +6,7 @@
 #include "info.h"
 #include "subject.h"
 #include "observer.h"
+#include "graphicsdisplay.h"
 #include <iostream>
 #include <vector>
 #include <cstddef>
@@ -16,9 +17,11 @@ class Board {
   int score;
   int hiscore;
   TextDisplay *td;
+  GraphicsDisplay *gd;
   private: 
   bool isEmpty(int row, int col);                                           // Checks if cell at given row and column is empty
   public:
+  bool showGraphicsDisplay = true;
   ~Board();
   void init(int currLevel);  
   void setLevel(int currLevel);

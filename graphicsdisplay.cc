@@ -37,9 +37,6 @@ void GraphicsDisplay::updateLevel(int newLevel){
 
 }
 
-void GraphicsDisplay::drawNextBlock(Block &b){
-	
-}
 
 void GraphicsDisplay::notify(Subject<Info> &whoNotified) {
   auto info = whoNotified.getInfo();
