@@ -183,6 +183,7 @@ int curr_row = 0, curr_col = 0;
       }
       }
       newblock = 0;
+	
       //Figuring out which command was entered
       if (counter==0&&cmds3.size()==0){
           cout << "Enter a command: ";
@@ -215,6 +216,10 @@ int curr_row = 0, curr_col = 0;
       } else {
          counter --;
       }
+
+	Block *hintBlock = new Block{b->getType(), level, true};
+	Info hintInfo = gameBoard.hint(*hintBlock);
+	bool hintPlaced = false;
       //Commands that don't need a block
       if (cmd=="restart"){
           //g.init(n);
@@ -255,7 +260,10 @@ int curr_row = 0, curr_col = 0;
             ++curr_col;
             gameBoard.setPiece(curr_row, curr_col, *b);
           }
-        } else if (cmd == "right"){
+        }else if(cmd == "hint"){
+		hintPlaced = true;
+		gameBoard.setPiece(hintInfo.row, hintInfo.col, *hintBlock);
+	} else if (cmd == "right"){
         gameBoard.clearPiece(curr_row, curr_col, *b);
           ++curr_col;
           if (gameBoard.canPlace(curr_row, curr_col, *b)) {
@@ -292,6 +300,9 @@ int curr_row = 0, curr_col = 0;
             gameBoard.setPiece(curr_row, curr_col, *b);
           }
         } else if (cmd == "drop"){
+		if(hintPlaced == true){
+			gameBoard.clearPiece(hintInfo.row, hintInfo.col, *hintBlock);
+		}
              gameBoard.clearPiece(curr_row, curr_col, *b);
              while (gameBoard.canPlace(curr_row, curr_col, *b)) ++curr_row;
              --curr_row;
