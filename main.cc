@@ -266,7 +266,6 @@ int curr_row = 0, curr_col = 0;
         }else if(cmd == "hint"){
 		hintPlaced = true;
 		gameBoard.setPiece(hintInfo.row, hintInfo.col, *hintBlock);
-		cout<<"set:"<<hintInfo.row<<"-"<<hintInfo.col<<endl;
 	} else if (cmd == "right"){
         gameBoard.clearPiece(curr_row, curr_col, *b);
           ++curr_col;
@@ -306,7 +305,6 @@ int curr_row = 0, curr_col = 0;
         } else if (cmd == "drop"){
 		if(hintPlaced == true){
 			gameBoard.clearPiece(hintInfo.row, hintInfo.col, *hintBlock);
-			cout<<"Clear:"<<hintInfo.row<<"_"<<hintInfo.col<<endl;
 		}
 		hintPlaced = false;
              gameBoard.clearPiece(curr_row, curr_col, *b);
