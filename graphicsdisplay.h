@@ -6,6 +6,8 @@
 #include "window.h"
 #include "info.h"
 #include "subject.h"
+#include "block.h"
+#include <string>
 class Cell;
 
 class GraphicsDisplay: public Observer<Info> {
@@ -16,6 +18,9 @@ class GraphicsDisplay: public Observer<Info> {
   int highScore = 0;
  public:
   GraphicsDisplay();
+  void updateScore(int newScore);
+  void updateHighScore(int newHighScore);
+  void updateLevel(int newLevel);
 
   void notify(Subject<Info> &whoNotified) override;
 };
