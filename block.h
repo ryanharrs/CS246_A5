@@ -9,7 +9,9 @@ class Block {
 	int level;
 	int pieces;
 	bool isHint;
+	char blockType = 'O';
  	public:
+	char getType();
 	bool getIfHint();
 	Block(char type, int currLevel, bool isHintVar);
 	Block(char type, int currLevel);

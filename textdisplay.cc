@@ -16,6 +16,8 @@ TextDisplay::TextDisplay() {
 void TextDisplay::notify(Subject<Info> &whoNotified){
 	if (whoNotified.getInfo().type == ' ') {
 		theDisplay[whoNotified.getInfo().row][whoNotified.getInfo().col] = ' ';
+	} else if (whoNotified.getInfo().type == '?') {
+		theDisplay[whoNotified.getInfo().row][whoNotified.getInfo().col] = '?';
 	} else if (whoNotified.getInfo().type == 'I') {
 		theDisplay[whoNotified.getInfo().row][whoNotified.getInfo().col] = 'I';
 	} else if (whoNotified.getInfo().type == 'J') {

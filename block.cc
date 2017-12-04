@@ -1,13 +1,16 @@
 #include "block.h"
 
 Block::~Block() {}
-
-bool Block:getIfHint(){
+bool Block::getIfHint(){
 	return isHint;
 }
 
+char Block::getType(){
+	return blockType;
+}
 Block::Block(char type, int currLevel, bool isHintVar){
 	isHint = isHintVar;
+	blockType = type;
 	blockGrid.clear();
 	position = 0;
 	level = currLevel;
@@ -48,14 +51,13 @@ Block::Block(char type, int currLevel, bool isHintVar){
 		blockGrid.emplace_back(BlockCell {'T', 3, 2});
 		blockGrid.emplace_back(BlockCell {'T', 4, 1});
 	} 
-
-
 }
 
 Block::Block(char type, int currLevel) {
 	blockGrid.clear();
 	position = 0;
 	isHint = false;
+	blockType = type;
 	level = currLevel;
 	pieces = 4;
 	if (type == 'I') {
