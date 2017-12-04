@@ -105,6 +105,7 @@ int main(int argc, char *argv[]) {
   cin.exceptions(ios::eofbit|ios::failbit);
   // Game variables
   int level = 0;
+  int hiScore = 0;
   int noClear = 0;
   bool blockMove = false;
   bool blockDrop = false;
@@ -115,7 +116,6 @@ int main(int argc, char *argv[]) {
   bool hintPlaced = false;
   shared_ptr<Block> hintBlock;
   Info hintInfo;
-  // Initialization of the board
   Board gameBoard;
 
 
@@ -154,7 +154,7 @@ int main(int argc, char *argv[]) {
           if (n!=0){ startlevel = true;}
         }
   }
-  gameBoard.init(level, showGraphics); // initalizing gamebaord
+  gameBoard.init(level, hiScore, showGraphics); // initalizing gamebaord
   gameBoard.setLevel(level);
   if (level==3) isHeavy = true;
   if (level==4) {
@@ -163,9 +163,9 @@ int main(int argc, char *argv[]) {
       }
   vector <string> cmds2;  
 if (startlevel != true){
-	cerr << scriptfile;
-	ifstream f {scriptfile};
-	string tt;
+  cerr << scriptfile;
+  ifstream f {scriptfile};
+  string tt;
         cmds2.clear();
         while(f>>tt){
           cmds2.insert(cmds2.begin(), tt);
@@ -175,8 +175,8 @@ if (startlevel != true){
   string s;     //name of initial file
   string s2;    //name of non random file
   if (startlevel != true){
-  	s = cmds2.back();
-  	cmds2.pop_back();
+    s = cmds2.back();
+    cmds2.pop_back();
 } else { s = "";}
   shared_ptr<Block> b = getblock(s, level, random);
   shared_ptr<Block> next;
@@ -209,7 +209,7 @@ if (startlevel != true){
         }
         if (done>1){
           next = getblock(str, level, random);
-	  gameBoard.updateGdNextBlock(next);
+    gameBoard.updateGdNextBlock(next);
         }
         hintBlock = make_shared<Block>(b->getCell(0).type, level, true);
         hintInfo = gameBoard.hint(hintBlock);
@@ -261,27 +261,28 @@ if (startlevel != true){
       }
       //Commands that don't need a block
       if (cmd=="restart"){
-	gameBoard.init(level, showGraphics);
-	string str;
+        hiScore = gameBoard.getHS();
+        gameBoard.init(level, hiScore, showGraphics);
+        string str;
         ifstream f {scriptfile};
         string tt;
         cmds2.clear();
         while(f>>tt){
           cmds2.insert(cmds2.begin(), tt);
         }
-	if ((level==0)||(random==0)){
-	    if (!cmds2.empty()){
+        if ((level==0)||(random==0)){
+          if (!cmds2.empty()){
             str = cmds2.back();
             cmds2.pop_back();
-           } else {
+          } else {
             cout << "No more commands" << endl;
             done--;
           }
-	} else {
-		str = "";
-	}
-	b = getblock(str, level, random);
-	// printing the block
+        } else {
+          str = "";
+        }
+          b = getblock(str, level, random);
+  // printing the block
           gameBoard.setPiece(curr_row, curr_col, b);
           cout << gameBoard << endl;
           cout << "Next: " << endl;
@@ -393,7 +394,15 @@ if (startlevel != true){
         blockMove = true;
         blockDrop = true;
       } else if (cmd=="I"||cmd=="J"||cmd=="L"||cmd=="S"||cmd=="Z"||cmd=="T"||cmd=="O"){
-                
+        char prevType = b->getType();
+        gameBoard.clearPiece(curr_row, curr_col, b);
+        b->swapBlock(cmd[0]);
+        if (gameBoard.canPlace(curr_row, curr_col, b)) {
+          gameBoard.setPiece(curr_row, curr_col, b);
+        } else {
+          b->swapBlock(prevType);
+          gameBoard.setPiece(curr_row, curr_col, b);
+        }
       } else if (cmd=="hint"){
         hintPlaced = true;
         gameBoard.setPiece(hintInfo.row, hintInfo.col, hintBlock);

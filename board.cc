@@ -23,11 +23,11 @@ void Board::updateGdNextBlock(shared_ptr<Block> &b){
   if (showGraphics) gd->updateNextBlock(b);
 }
 
-void Board::init(int currLevel, bool getGraphics) {
+void Board::init(int currLevel, int currHS, bool getGraphics) {
   theBoard.clear();
   level = currLevel;
   score = 0;
-  hiscore = 0;
+  hiscore = currHS;
   showGraphics = getGraphics;
   td = make_shared<TextDisplay>();
   if (showGraphics) gd = make_shared<GraphicsDisplay>();
@@ -42,6 +42,7 @@ void Board::init(int currLevel, bool getGraphics) {
     theBoard.emplace_back(theRow);
   }
   if (showGraphics) gd->updateLevel(level);
+  if (showGraphics) gd->updateHighScore(hiscore);
 }
 
 void Board::setLevel(int currLevel) {
@@ -173,7 +174,10 @@ Info Board::hint(shared_ptr<Block> &b){
     hintRotation--;
   }
   return {hintRow, hintCol, b->getType(), b};  
+}
 
+int Board::getHS() {
+  return hiscore;
 }
 
 std::ostream &operator<<(std::ostream &out, const Board &b){

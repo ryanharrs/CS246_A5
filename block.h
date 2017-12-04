@@ -21,6 +21,7 @@ class Block {
 	void decPieces();
 	char getType();
 	bool getIfHint();
+	void swapBlock(char type);
 	~Block();
 };
 

@@ -24,7 +24,7 @@ class Board {
   bool isEmpty(int row, int col);                                           // Checks if cell at given row and column is empty
   public:
   ~Board();
-  void init(int currLevel, bool getGraphics);  
+  void init(int currLevel, int currHS, bool getGraphics);  
   void updateGdNextBlock(std::shared_ptr<Block> &b);
   void setLevel(int currLevel);
   void setPiece(int curr_row, int curr_col, std::shared_ptr<Block> &b);    
@@ -33,6 +33,7 @@ class Board {
   void placeSplit(std::shared_ptr<Block> &b);
   bool clearRows();
   Info hint(std::shared_ptr<Block> &b);
+  int getHS();
   friend std::ostream &operator<<(std::ostream &out, const Board &b);
 };
 
