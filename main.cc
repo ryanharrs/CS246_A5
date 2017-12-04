@@ -101,7 +101,9 @@ int main(int argc, char *argv[]) {
   //srand(time(NULL));
   string block;
   int level = 0;
-
+  bool hintPlaced = false;
+  Block *hintBlock = nullptr;
+  Info hintInfo;
   bool newblock = 1;
   bool random = 1;
   Board gameBoard;
@@ -168,7 +170,8 @@ int curr_row = 0, curr_col = 0;
       if (done>1){
       next = getblock(str, level, random);
         }
-
+  	hintBlock = new Block{b->getType(), level, true};
+  	hintInfo = gameBoard.hint(*hintBlock);
         //If new block can be placed
      if (gameBoard.canPlace(curr_row, curr_col, *b)) {
         gameBoard.setPiece(curr_row, curr_col, *b);
@@ -183,7 +186,7 @@ int curr_row = 0, curr_col = 0;
       }
       }
       newblock = 0;
-	
+
       //Figuring out which command was entered
       if (counter==0&&cmds3.size()==0){
           cout << "Enter a command: ";
@@ -217,9 +220,7 @@ int curr_row = 0, curr_col = 0;
          counter --;
       }
 
-	Block *hintBlock = new Block{b->getType(), level, true};
-	Info hintInfo = gameBoard.hint(*hintBlock);
-	bool hintPlaced = false;
+
       //Commands that don't need a block
       if (cmd=="restart"){
           //g.init(n);
@@ -263,6 +264,7 @@ int curr_row = 0, curr_col = 0;
         }else if(cmd == "hint"){
 		hintPlaced = true;
 		gameBoard.setPiece(hintInfo.row, hintInfo.col, *hintBlock);
+		cout<<"set:"<<hintInfo.row<<"-"<<hintInfo.col<<endl;
 	} else if (cmd == "right"){
         gameBoard.clearPiece(curr_row, curr_col, *b);
           ++curr_col;
@@ -302,7 +304,9 @@ int curr_row = 0, curr_col = 0;
         } else if (cmd == "drop"){
 		if(hintPlaced == true){
 			gameBoard.clearPiece(hintInfo.row, hintInfo.col, *hintBlock);
+			cout<<"Clear:"<<hintInfo.row<<"_"<<hintInfo.col<<endl;
 		}
+		hintPlaced = false;
              gameBoard.clearPiece(curr_row, curr_col, *b);
              while (gameBoard.canPlace(curr_row, curr_col, *b)) ++curr_row;
              --curr_row;
@@ -313,8 +317,6 @@ int curr_row = 0, curr_col = 0;
                 Block *tempb = b;
                 b = getblock(cmd, level, random);
                 delete tempb;
-        } else if (cmd=="hint"){
-
         }
 
        if (newblock==0){
