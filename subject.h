@@ -24,14 +24,14 @@
 template <typename InfoType> class Observer;
 
 template <typename InfoType> class Subject {
-  std::vector<Observer<InfoType>*> observers; 
-  public:
-  void attach(Observer<InfoType> *o);
+ public:
+  std::vector<std::shared_ptr<Observer<InfoType>>> observers;
+  void attach(std::shared_ptr<Observer<InfoType>> o);
   void notifyObservers();
   virtual InfoType getInfo() = 0;
 };
 
-template <typename InfoType> void Subject<InfoType>::attach(Observer<InfoType> *o) {
+template <typename InfoType> void Subject<InfoType>::attach(std::shared_ptr<Observer<InfoType>> o) {
   observers.emplace_back(o);
 }
 

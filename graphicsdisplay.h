@@ -8,20 +8,20 @@
 #include "subject.h"
 #include "block.h"
 #include <string>
-class Cell;
+#include <memory>
 
 class GraphicsDisplay: public Observer<Info> {
   const int blockWidth, blockHeight, widthSize, heightSize, sidePanelWidth, recWidthSize, recHeightSize;
   Xwindow xw;
   std::string level = std::to_string(0);
-  std::string score = std::to_string(0);	
+  std::string score = std::to_string(0);  
   std::string highScore = std::to_string(0);
  public:
   GraphicsDisplay();
   void updateScore(int newScore);
   void updateHighScore(int newHighScore);
   void updateLevel(int newLevel);
-  void updateNextBlock(Block &b);
+  void updateNextBlock(std::shared_ptr<Block> &b);
   void notify(Subject<Info> &whoNotified) override;
 };
 #endif

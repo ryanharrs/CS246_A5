@@ -21,7 +21,7 @@ Board::~Board() {
 }
 
 void Board::updateGdNextBlock(Block &b){
-	gd->updateNextBlock(b);
+  gd->updateNextBlock(b);
 }
 
 void Board::init(int currLevel) {
@@ -39,7 +39,7 @@ void Board::init(int currLevel) {
       BoardCell bc{row, col, ' '};
       theRow.emplace_back(bc);
       theRow[col].attach(td);
-      theRow[col].attach(gd); 	
+      theRow[col].attach(gd);   
     }
     theBoard.emplace_back(theRow);
   }
@@ -105,11 +105,11 @@ bool Board::clearRows() {
       for (int col = 0; col < 11; col++) {
         if (theBoard[row][col].getInfo().bp->numPieces() == 1) {
           score += (theBoard[row][col].getInfo().bp->getLevel() + 1) * (theBoard[row][col].getInfo().bp->getLevel() + 1);
-	  gd->updateScore(score);
+    gd->updateScore(score);
           if (score > hiscore) {
-		hiscore = score;
-		gd->updateHighScore(hiscore);
-	  }
+    hiscore = score;
+    gd->updateHighScore(hiscore);
+    }
           theBoard[row][col].clearSP();
         } else {
           theBoard[row][col].getInfo().bp->decPieces();
@@ -131,8 +131,8 @@ bool Board::clearRows() {
     score += (level + linesCleared) * (level + linesCleared);
     gd->updateScore(score);
     if (score > hiscore) {
-	hiscore = score;
-	gd->updateHighScore(hiscore);
+  hiscore = score;
+  gd->updateHighScore(hiscore);
     }
     return true;
   } else {

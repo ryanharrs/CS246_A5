@@ -10,21 +10,22 @@
 #include <iostream>
 #include <vector>
 #include <cstddef>
+#include <memory>
 
 class Board {
   std::vector<std::vector<BoardCell>> theBoard;
   int level;
   int score;
   int hiscore;
-  TextDisplay *td;
-  GraphicsDisplay *gd;
+  bool showGraphics;
+  std::shared_ptr<TextDisplay> td;
+  std::shared_ptr<GraphicsDisplay> gd;
   private: 
   bool isEmpty(int row, int col);                                           // Checks if cell at given row and column is empty
   public:
-  bool showGraphicsDisplay = true;
   ~Board();
-  void init(int currLevel);  
-  void updateGdNextBlock(Block &b);
+  void init(int currLevel, bool getGraphics);  
+  void updateGdNextBlock(std::shared_ptr<Block> &b);
   void setLevel(int currLevel);
   void setPiece(int curr_row, int curr_col, std::shared_ptr<Block> &b);    
   bool canPlace(int curr_row, int curr_col, const std::shared_ptr<Block> &b);
