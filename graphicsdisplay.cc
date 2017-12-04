@@ -25,6 +25,9 @@ void GraphicsDisplay::notify(Subject<Info> &whoNotified) {
    case '?':
     xw.fillRectangle(info.col * cellWidth, (info.row + 1) * cellHeight, cellWidth, cellHeight, Xwindow::Black);
     break;
+   case '*':
+    xw.fillRectangle(info.col * cellWidth, (info.row + 1) * cellHeight, cellWidth, cellHeight, Xwindow::Brown);
+    break;
    case 'S':
     xw.fillRectangle(info.col * cellWidth, (info.row + 1) * cellHeight, cellWidth, cellHeight, Xwindow::Green);
     break;
