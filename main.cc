@@ -101,25 +101,27 @@ int main(int argc, char *argv[]) {
   //srand(time(NULL));
   string block;
   int level = 0;
-
+  bool hintPlaced = false;
+  Block *hintBlock = nullptr;
+  Info hintInfo;
   bool newblock = 1;
   bool random = 1;
   Board gameBoard;
-  gameBoard.init();
+  
 int curr_row = 0, curr_col = 0;
   int counter = 0;
   bool first=1;
   int done = 2;
 
 //bool's for cmd line args
-  bool text = 0;
+  
   bool seed = 0;
   string scriptfile = argv[argc-1];
 
   //Figuring out which cmd line args were entered
   for (int i = 1; i<argc-1; i++){
         string s = argv[i];
-        if (s=="-text"){ text = 1;}
+        if (s=="-text"){gameBoard.showGraphicsDisplay = false;}
         else if (s=="-seed"){ seed = 1;}
         else if (s=="-scriptfile"){
         scriptfile = argv[i+1];
@@ -130,6 +132,8 @@ int curr_row = 0, curr_col = 0;
                 if (n==1||n==2||n==3||n==4){ level = n;}
         }
   }
+
+  gameBoard.init();
 
   ifstream f {scriptfile};
 
@@ -168,7 +172,8 @@ int curr_row = 0, curr_col = 0;
       if (done>1){
       next = getblock(str, level, random);
         }
-
+  	hintBlock = new Block{b->getType(), level, true};
+  	hintInfo = gameBoard.hint(*hintBlock);
         //If new block can be placed
      if (gameBoard.canPlace(curr_row, curr_col, *b)) {
         gameBoard.setPiece(curr_row, curr_col, *b);
@@ -183,7 +188,7 @@ int curr_row = 0, curr_col = 0;
       }
       }
       newblock = 0;
-	
+
       //Figuring out which command was entered
       if (counter==0&&cmds3.size()==0){
           cout << "Enter a command: ";
@@ -217,9 +222,7 @@ int curr_row = 0, curr_col = 0;
          counter --;
       }
 
-	Block *hintBlock = new Block{b->getType(), level, true};
-	Info hintInfo = gameBoard.hint(*hintBlock);
-	bool hintPlaced = false;
+
       //Commands that don't need a block
       if (cmd=="restart"){
           //g.init(n);
@@ -303,6 +306,7 @@ int curr_row = 0, curr_col = 0;
 		if(hintPlaced == true){
 			gameBoard.clearPiece(hintInfo.row, hintInfo.col, *hintBlock);
 		}
+		hintPlaced = false;
              gameBoard.clearPiece(curr_row, curr_col, *b);
              while (gameBoard.canPlace(curr_row, curr_col, *b)) ++curr_row;
              --curr_row;
@@ -313,8 +317,6 @@ int curr_row = 0, curr_col = 0;
                 Block *tempb = b;
                 b = getblock(cmd, level, random);
                 delete tempb;
-        } else if (cmd=="hint"){
-
         }
 
        if (newblock==0){

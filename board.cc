@@ -25,11 +25,15 @@ void Board::init() {
   score = 0;
   hiscore = 0;
   td = new TextDisplay;
+  if(showGraphicsDisplay == true){
+	gd = new GraphicsDisplay;
+ }
   for (int row = 0; row < 18; row ++) {
     vector<BoardCell> theRow;
     for (int col = 0; col < 11; col ++) {
       BoardCell bc{row, col, ' '};
       bc.attach(td);
+      bc.attach(gd);
       theRow.emplace_back(bc);
     }
     theBoard.emplace_back(theRow);
@@ -44,27 +48,29 @@ Info Board::hint(Block&b){
 	int magicNum = 0;
 	for(int i = 0; i < 11; i++){
 		for(int r = 0; r < 4; r++){
-			int currMagicNum = 0;
-			currRow = 0;
-			while(canPlace(currRow, i, b) == true){
-				currRow++;
+			if(canPlace(0,i, b) == true){
+				int currMagicNum = 0;
+				currRow = 0;
+				while(canPlace(currRow, i, b) == true){
+					currRow++;
+				}
+				currRow--;
+				for(int idx = 0; idx < 4; idx++){
+					currMagicNum += (b.getCell(idx).row + currRow);
+				}
+		
+				if(currMagicNum > magicNum){
+					magicNum = currMagicNum;
+					hintCol = i;
+					hintRotation = r;
+					hintRow = currRow;
+				}
 			}
-			currRow--;
-			for(int idx = 0; idx < 4; idx++){
-				currMagicNum += (b.getCell(idx).row + currRow);
-			}
-			
-			if(currMagicNum > magicNum){
-				magicNum = currMagicNum;
-				hintCol = i;
-				hintRotation = r;
-				hintRow = currRow;
-			}
-			b.clockwise();
+		b.clockwise();
 		}
 	}
 	while(hintRotation != 0){
-		b.counter_clockwise();
+		b.clockwise();
 		hintRotation--;
 	}
 	Block *forInfo = &b;
@@ -99,7 +105,7 @@ void Board::setPiece(int curr_row, int curr_col, Block &b) {
    		theBoard[curr_row + b.getCell(idx).row][curr_col + b.getCell(idx).col].setBP(&b);
   		}	
 	}
-}
+}	
 
 void Board::clearPiece (int curr_row, int curr_col, const Block &b) {
   for (int idx = 0; idx < 4; idx++) {
@@ -137,6 +143,7 @@ void Board::clearRows(int currLevel) {
       ++row;
       ++linesCleared;
     }
+   fullRow = true;
   }
   score += (currLevel + linesCleared) * (currLevel + linesCleared);
   if (score > hiscore) hiscore = score;

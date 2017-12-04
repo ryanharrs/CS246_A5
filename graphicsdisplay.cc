@@ -1,7 +1,5 @@
-#include <iostream>
 #include "graphicsdisplay.h"
-#include "info.h"
-#include "subject.h"
+
 using namespace std;
 
 GraphicsDisplay::GraphicsDisplay():
@@ -18,31 +16,34 @@ GraphicsDisplay::GraphicsDisplay():
 }
 
 
-void GraphicsDisplay::notify(Subject<Info, State> &whoNotified) {
+void GraphicsDisplay::notify(Subject<Info> &whoNotified) {
   auto info = whoNotified.getInfo();
 
   int cellWidth = (widthSize-sidePanelWidth) / blockWidth;
   int cellHeight = heightSize/blockHeight;
   switch(info.type) {
-   case BlockType::S:
+   case '?':
+    xw.fillRectangle(info.col * cellWidth, (info.row + 1) * cellHeight, cellWidth, cellHeight, Xwindow::Black);
+    break;
+   case 'S':
     xw.fillRectangle(info.col * cellWidth, (info.row + 1) * cellHeight, cellWidth, cellHeight, Xwindow::Green);
     break;
-   case BlockType::I:
+   case 'I':
     xw.fillRectangle(info.col * cellWidth, (info.row + 1) * cellHeight, cellWidth, cellHeight, Xwindow::Cyan);
     break;
-   case BlockType::J:
+   case 'J':
     xw.fillRectangle(info.col * cellWidth, (info.row + 1)* cellHeight, cellWidth, cellHeight, Xwindow::Orange);
     break;
-   case BlockType::L:
+   case 'L':
     xw.fillRectangle(info.col * cellWidth,(info.row + 1) * cellHeight, cellWidth, cellHeight, Xwindow::Blue);
     break;
-   case BlockType::O:
+   case 'O':
     xw.fillRectangle(info.col * cellWidth, (info.row + 1) * cellHeight, cellWidth, cellHeight, Xwindow::Yellow);
     break;
-   case BlockType::Z:
+   case 'Z':
     xw.fillRectangle(info.col * cellWidth, (info.row + 1) * cellHeight, cellWidth, cellHeight,Xwindow::Red);
     break;
-    case BlockType::T:
+    case 'T':
     xw.fillRectangle(info.col * cellWidth, (info.row + 1)* cellHeight, cellWidth, cellHeight, Xwindow::Purple);
     break;
    default:
