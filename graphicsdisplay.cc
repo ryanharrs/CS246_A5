@@ -7,11 +7,11 @@ GraphicsDisplay::GraphicsDisplay():
   
   xw.fillRectangle(0, heightSize/blockHeight, widthSize - sidePanelWidth, heightSize, Xwindow::Gray);
   xw.drawString(10,24, "Level:");
-  xw.drawString(80,24, "0");
+  xw.drawString(80,24, level);
   xw.drawString(130, 24, "Score:");
-  xw.drawString(190,24, "0");
+  xw.drawString(190,24, score);
   xw.drawString(260,24, "Hi Score:");
-  xw.drawString(340,24, "0");
+  xw.drawString(340,24, highScore);
   xw.drawString(0, heightSize/blockHeight - 5,  "__________________________________________________________________________________________");
   xw.drawString(widthSize - sidePanelWidth + 20, heightSize/blockHeight + 20, "Next Block:");	
 }
