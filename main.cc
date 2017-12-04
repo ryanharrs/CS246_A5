@@ -107,21 +107,21 @@ int main(int argc, char *argv[]) {
   bool newblock = 1;
   bool random = 1;
   Board gameBoard;
-  gameBoard.init();
+  
 int curr_row = 0, curr_col = 0;
   int counter = 0;
   bool first=1;
   int done = 2;
 
 //bool's for cmd line args
-  bool text = 0;
+  
   bool seed = 0;
   string scriptfile = argv[argc-1];
 
   //Figuring out which cmd line args were entered
   for (int i = 1; i<argc-1; i++){
         string s = argv[i];
-        if (s=="-text"){ text = 1;}
+        if (s=="-text"){gameBoard.showGraphicsDisplay = false;}
         else if (s=="-seed"){ seed = 1;}
         else if (s=="-scriptfile"){
         scriptfile = argv[i+1];
@@ -132,6 +132,8 @@ int curr_row = 0, curr_col = 0;
                 if (n==1||n==2||n==3||n==4){ level = n;}
         }
   }
+
+  gameBoard.init();
 
   ifstream f {scriptfile};
 

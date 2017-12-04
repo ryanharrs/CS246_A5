@@ -33,6 +33,7 @@ void Board::init() {
     for (int col = 0; col < 11; col ++) {
       BoardCell bc{row, col, ' '};
       bc.attach(td);
+      bc.attach(gd);
       theRow.emplace_back(bc);
     }
     theBoard.emplace_back(theRow);

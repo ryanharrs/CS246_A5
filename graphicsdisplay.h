@@ -3,12 +3,12 @@
 #include <iostream>
 #include <vector>
 #include "observer.h"
-#include "state.h"
 #include "window.h"
 #include "info.h"
+#include "subject.h"
 class Cell;
 
-class GraphicsDisplay: public Observer<Info, State> {
+class GraphicsDisplay: public Observer<Info> {
   const int blockWidth, blockHeight, widthSize, heightSize, sidePanelWidth, recWidthSize, recHeightSize;
   Xwindow xw;
   int level = 0;
@@ -17,6 +17,6 @@ class GraphicsDisplay: public Observer<Info, State> {
  public:
   GraphicsDisplay();
 
-  void notify(Subject<Info, State> &whoNotified) override;
+  void notify(Subject<Info> &whoNotified) override;
 };
 #endif
