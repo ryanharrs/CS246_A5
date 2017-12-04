@@ -197,6 +197,7 @@ int main(int argc, char *argv[]) {
         }
         if (done>1){
           next = getblock(str, level, random);
+	  gameBoard.updateGdNextBlock(*next);
         }
         hintBlock = make_shared<Block>(b->getType(), level, true);
         hintInfo = gameBoard.hint(hintBlock);

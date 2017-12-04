@@ -13,15 +13,15 @@ class Cell;
 class GraphicsDisplay: public Observer<Info> {
   const int blockWidth, blockHeight, widthSize, heightSize, sidePanelWidth, recWidthSize, recHeightSize;
   Xwindow xw;
-  int level = 0;
-  int currScore = 0;	
-  int highScore = 0;
+  std::string level = std::to_string(0);
+  std::string score = std::to_string(0);	
+  std::string highScore = std::to_string(0);
  public:
   GraphicsDisplay();
   void updateScore(int newScore);
   void updateHighScore(int newHighScore);
   void updateLevel(int newLevel);
-
+  void updateNextBlock(Block &b);
   void notify(Subject<Info> &whoNotified) override;
 };
 #endif
