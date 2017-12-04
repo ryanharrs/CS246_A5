@@ -18,6 +18,7 @@ class Board {
   private: 
   bool isEmpty(int row, int col);                                           // Checks if cell at given row and column is empty
   public:
+  bool showGraphicsDisplay = false;
   ~Board();
   void init(); 
   Info hint(Block &b);
