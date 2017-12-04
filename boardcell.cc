@@ -10,14 +10,13 @@ void BoardCell::setType(char getType) {
 	notifyObservers();
 }
 
-void BoardCell::setBP(Block *b) {
+void BoardCell::setSP(std::shared_ptr<Block> &b) {
 	bp = b;
 }
 
-void BoardCell::delBP(){
-	delete bp;
+void BoardCell::clearSP() {
+	bp = nullptr;
 }
 
 BoardCell::~BoardCell() {
-	delete bp;
 }

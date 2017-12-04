@@ -1,13 +1,7 @@
 #include "block.h"
 
 Block::~Block() {}
-bool Block::getIfHint(){
-	return isHint;
-}
 
-char Block::getType(){
-	return blockType;
-}
 Block::Block(char type, int currLevel, bool isHintVar){
 	isHint = isHintVar;
 	blockType = type;
@@ -54,10 +48,10 @@ Block::Block(char type, int currLevel, bool isHintVar){
 }
 
 Block::Block(char type, int currLevel) {
+	blockType = type;
+	isHint = false;
 	blockGrid.clear();
 	position = 0;
-	isHint = false;
-	blockType = type;
 	level = currLevel;
 	pieces = 4;
 	if (type == 'I') {
@@ -95,7 +89,10 @@ Block::Block(char type, int currLevel) {
 		blockGrid.emplace_back(BlockCell {'T', 3, 1});
 		blockGrid.emplace_back(BlockCell {'T', 3, 2});
 		blockGrid.emplace_back(BlockCell {'T', 4, 1});
-	} 
+	} else if (type == '*') {
+		blockGrid.emplace_back(BlockCell {'*', 0, 0});
+		pieces = 1;
+	}
 }
 
 void Block::clockwise() {
@@ -222,7 +219,7 @@ int Block::getLevel() {
 	return level;
 }
 
-int Block::numPieces() {
+int Block::numPieces() const {
 	return pieces;
 }
 
@@ -232,4 +229,12 @@ void Block::decPieces() {
 
 BlockCell Block::getCell(int idx) const {
 	return blockGrid[idx];
+}
+
+bool Block::getIfHint(){
+	return isHint;
+}
+
+char Block::getType(){
+	return blockType;
 }

@@ -24,8 +24,8 @@
 template <typename InfoType> class Observer;
 
 template <typename InfoType> class Subject {
- public:
-  std::vector<Observer<InfoType>*> observers;
+  std::vector<Observer<InfoType>*> observers; 
+  public:
   void attach(Observer<InfoType> *o);
   void notifyObservers();
   virtual InfoType getInfo() = 0;

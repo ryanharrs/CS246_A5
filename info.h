@@ -2,11 +2,12 @@
 #define __INFO_H__
 #include <cstddef>
 #include "block.h"
+#include <memory>
 
 struct Info {
   int row, col;
   char type;
-  Block *bp;
+  std::shared_ptr<Block> bp;
 };
 
 #endif

@@ -13,6 +13,28 @@ GraphicsDisplay::GraphicsDisplay():
   xw.drawString(260,24, "Hi Score:");
   xw.drawString(340,24, "0");
   xw.drawString(0, heightSize/blockHeight - 5,  "__________________________________________________________________________________________");
+  xw.drawString(widthSize - sidePanelWidth + 20, heightSize/blockHeight + 20, "Next Block:");	
+}
+
+void GraphicsDisplay::updateScore(int newScore){
+	string score = to_string(newScore);
+	xw.fillRectangle(190, 24, 50, 20, Xwindow::White);
+	xw.drawString(190, 24, score);
+
+}
+
+void GraphicsDisplay::updateHighScore(int newHighScore){
+	string highScore = to_string(newHighScore);
+	xw.fillRectangle(340, 24, 50, 20, Xwindow::White);
+	xw.drawString(190, 24, highScore);
+
+}
+
+void GraphicsDisplay::updateLevel(int newLevel){
+	string level = to_string(newLevel);
+	xw.fillRectangle(190, 24, 50, 20, Xwindow::White);
+	xw.drawString(10, 24, level);
+
 }
 
 
@@ -24,6 +46,9 @@ void GraphicsDisplay::notify(Subject<Info> &whoNotified) {
   switch(info.type) {
    case '?':
     xw.fillRectangle(info.col * cellWidth, (info.row + 1) * cellHeight, cellWidth, cellHeight, Xwindow::Black);
+    break;
+   case '*':
+    xw.fillRectangle(info.col * cellWidth, (info.row + 1) * cellHeight, cellWidth, cellHeight, Xwindow::Brown);
     break;
    case 'S':
     xw.fillRectangle(info.col * cellWidth, (info.row + 1) * cellHeight, cellWidth, cellHeight, Xwindow::Green);
