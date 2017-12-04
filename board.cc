@@ -17,38 +17,36 @@ bool Board::isEmpty(int row, int col) {
 
 // Public methods
 Board::~Board() {
-  delete td;
 }
 
-void Board::updateGdNextBlock(Block &b){
-  gd->updateNextBlock(b);
+void Board::updateGdNextBlock(shared_ptr<Block> &b){
+  if (showGraphics) gd->updateNextBlock(b);
 }
 
-void Board::init(int currLevel) {
+void Board::init(int currLevel, bool getGraphics) {
   theBoard.clear();
   level = currLevel;
   score = 0;
   hiscore = 0;
-  td = new TextDisplay;
-  if(showGraphicsDisplay == true){
-  gd = new GraphicsDisplay;
-}
+  showGraphics = getGraphics;
+  td = make_shared<TextDisplay>();
+  if (showGraphics) gd = make_shared<GraphicsDisplay>();
   for (int row = 0; row < 18; row ++) {
     vector<BoardCell> theRow;
     for (int col = 0; col < 11; col ++) {
       BoardCell bc{row, col, ' '};
       theRow.emplace_back(bc);
       theRow[col].attach(td);
-      theRow[col].attach(gd);   
+      if (showGraphics) theRow[col].attach(gd);   
     }
     theBoard.emplace_back(theRow);
   }
-  gd->updateLevel(level);
+  if (showGraphics) gd->updateLevel(level);
 }
 
 void Board::setLevel(int currLevel) {
   level = currLevel;
-  gd->updateLevel(level);
+  if (showGraphics) gd->updateLevel(level);
 }
 
 bool Board::canPlace(int curr_row, int curr_col, const shared_ptr<Block> &b) {
@@ -105,11 +103,11 @@ bool Board::clearRows() {
       for (int col = 0; col < 11; col++) {
         if (theBoard[row][col].getInfo().bp->numPieces() == 1) {
           score += (theBoard[row][col].getInfo().bp->getLevel() + 1) * (theBoard[row][col].getInfo().bp->getLevel() + 1);
-    gd->updateScore(score);
+          if (showGraphics) gd->updateScore(score);
           if (score > hiscore) {
-    hiscore = score;
-    gd->updateHighScore(hiscore);
-    }
+            hiscore = score;
+            if (showGraphics) gd->updateHighScore(hiscore);
+          }
           theBoard[row][col].clearSP();
         } else {
           theBoard[row][col].getInfo().bp->decPieces();
@@ -129,10 +127,10 @@ bool Board::clearRows() {
   }
   if (linesCleared > 0) { 
     score += (level + linesCleared) * (level + linesCleared);
-    gd->updateScore(score);
+    if (showGraphics) gd->updateScore(score);
     if (score > hiscore) {
-  hiscore = score;
-  gd->updateHighScore(hiscore);
+      hiscore = score;
+      if (showGraphics) gd->updateHighScore(hiscore);
     }
     return true;
   } else {
