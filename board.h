@@ -24,6 +24,7 @@ class Board {
   bool showGraphicsDisplay = true;
   ~Board();
   void init(int currLevel);  
+  void updateGdNextBlock(Block &b);
   void setLevel(int currLevel);
   void setPiece(int curr_row, int curr_col, std::shared_ptr<Block> &b);    
   bool canPlace(int curr_row, int curr_col, const std::shared_ptr<Block> &b);

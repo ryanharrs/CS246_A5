@@ -208,6 +208,7 @@ if (startlevel != true){
         }
         if (done>1){
           next = getblock(str, level, random);
+	  gameBoard.updateGdNextBlock(*next);
         }
         hintBlock = make_shared<Block>(b->getCell(0).type, level, true);
         hintInfo = gameBoard.hint(hintBlock);

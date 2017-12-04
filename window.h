@@ -9,7 +9,7 @@ class Xwindow {
   Window w;
   int s;
   GC gc;
-  unsigned long colours[10];
+  unsigned long colours[12];
 
  public:
   Xwindow(int width=500, int height=500);  // Constructor; displays the window.
@@ -25,6 +25,7 @@ class Xwindow {
   // Draws a string
   void drawString(int x, int y, std::string msg);
 
+ void clearArea(int x, int y, int width, int height);
 };
 
 #endif
