@@ -128,14 +128,14 @@ int main(int argc, char *argv[]) {
   int done = 2;
 
 //bool's for cmd line args
-  bool seed = 0;
   bool startlevel = false; 
+  bool showGraphics = true;
 
   string scriptfile = argv[argc-1];
   //Figuring out which cmd line args were entered
   for (int i = 1; i<argc-1; i++){
         string s = argv[i];
-        if(s == "-text"){gameBoard.showGraphicsDisplay = false;
+        if(s == "-text"){showGraphics = false;
         } else if (s=="-seed"){ 
           istringstream iss(argv[i+1]);
           int seed;
@@ -150,12 +150,12 @@ int main(int argc, char *argv[]) {
           iss>>n;
           if (n==1||n==2||n==3||n==4){ 
             level = n;
-            gameBoard.setLevel(level);
           }
           if (n!=0){ startlevel = true;}
         }
   }
-  gameBoard.init(level); // initalizing gamebaord
+  gameBoard.init(level, showGraphics); // initalizing gamebaord
+  gameBoard.setLevel(level);
   if (level==3) isHeavy = true;
   if (level==4) {
       isHeavy = true;
@@ -163,6 +163,7 @@ int main(int argc, char *argv[]) {
       }
   vector <string> cmds2;  
 if (startlevel != true){
+	cerr << scriptfile;
 	ifstream f {scriptfile};
 	string tt;
         cmds2.clear();
@@ -208,7 +209,7 @@ if (startlevel != true){
         }
         if (done>1){
           next = getblock(str, level, random);
-	  gameBoard.updateGdNextBlock(*next);
+	  gameBoard.updateGdNextBlock(next);
         }
         hintBlock = make_shared<Block>(b->getCell(0).type, level, true);
         hintInfo = gameBoard.hint(hintBlock);
@@ -260,7 +261,7 @@ if (startlevel != true){
       }
       //Commands that don't need a block
       if (cmd=="restart"){
-	gameBoard.init(level);
+	gameBoard.init(level, showGraphics);
 	string str;
         ifstream f {scriptfile};
         string tt;
