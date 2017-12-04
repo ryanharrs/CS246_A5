@@ -19,7 +19,8 @@ class Board {
   bool isEmpty(int row, int col);                                           // Checks if cell at given row and column is empty
   public:
   ~Board();
-  void init();  
+  void init(); 
+  Info hint(Block &b);
   void setPiece(int curr_row, int curr_col, Block &b);    
   bool canPlace(int curr_row, int curr_col, const Block &b);
   void clearPiece(int curr_row, int curr_col, const Block &b);

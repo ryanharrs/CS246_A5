@@ -36,25 +36,25 @@ void Board::init() {
   }
 }
 
-Info Board::hint(const Block&b){
-	Block hintBlock(b.type, level, true);
+Info Board::hint(Block&b){
 	int hintRotation = 0;
 	int hintCol = 0;
 	int hintRow = 0;
 	int currRow;
-	int magicNum = 18 * 4;
+	int magicNum = 0;
 	for(int i = 0; i < 11; i++){
 		for(int r = 0; r < 4; r++){
 			int currMagicNum = 0;
 			currRow = 0;
-			while(canPlace(currRow, i, hintBlock){
+			while(canPlace(currRow, i, b) == true){
 				currRow++;
 			}
 			currRow--;
 			for(int idx = 0; idx < 4; idx++){
-				currMagicNum += (hintBlock.getCell(idx).row + curr_row);
+				currMagicNum += (b.getCell(idx).row + currRow);
 			}
-			if(currMagicNum < magicNum){
+			
+			if(currMagicNum > magicNum){
 				magicNum = currMagicNum;
 				hintCol = i;
 				hintRotation = r;
@@ -62,28 +62,43 @@ Info Board::hint(const Block&b){
 			}
 			b.clockwise();
 		}
-		
 	}
 	while(hintRotation != 0){
-		b.counterclcokwise();
+		b.counter_clockwise();
 		hintRotation--;
 	}
-	return {hintRow, hintCol, b.type, b};	
+	Block *forInfo = &b;
+	return {hintRow, hintCol, b.getType(), forInfo};	
 
 }
 
 bool Board::canPlace(int curr_row, int curr_col, const Block &b) {
-  for (int idx = 0; idx < 4; idx++) {
+ 
+ if(curr_row > 17 || curr_col < 0  || curr_col > 10){
+	return false;
+ }
+
+ for (int idx = 0; idx < 4; idx++) {
     if (!isEmpty(b.getCell(idx).row + curr_row, b.getCell(idx).col + curr_col)) return false;
   }
+
   return true;
 }
 
 void Board::setPiece(int curr_row, int curr_col, Block &b) {
-  for (int idx = 0; idx < 4; idx++) {
-    theBoard[curr_row + b.getCell(idx).row][curr_col + b.getCell(idx).col].setType(b.getCell(idx).type);
-    theBoard[curr_row + b.getCell(idx).row][curr_col + b.getCell(idx).col].setBP(&b);
-  }
+	if(b.getIfHint() == true){
+ 		for (int idx = 0; idx < 4; idx++) {
+  			theBoard[curr_row + b.getCell(idx).row][curr_col + b.getCell(idx).col].setType('?');
+  			theBoard[curr_row + b.getCell(idx).row][curr_col + b.getCell(idx).col].setBP(&b);
+  		}
+
+	} 
+	else{
+		for (int idx = 0; idx < 4; idx++) {
+  		theBoard[curr_row + b.getCell(idx).row][curr_col + b.getCell(idx).col].setType(b.getCell(idx).type);
+   		theBoard[curr_row + b.getCell(idx).row][curr_col + b.getCell(idx).col].setBP(&b);
+  		}	
+	}
 }
 
 void Board::clearPiece (int curr_row, int curr_col, const Block &b) {
