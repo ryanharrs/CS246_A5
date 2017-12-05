@@ -163,7 +163,6 @@ int main(int argc, char *argv[]) {
       }
   vector <string> cmds2;  
 if (startlevel != true){
-  cerr << scriptfile;
   ifstream f {scriptfile};
   string tt;
         cmds2.clear();

@@ -82,8 +82,9 @@ void Board::clearPiece (int curr_row, int curr_col, const shared_ptr<Block> &b) 
 
 void Board::placeSplit (shared_ptr<Block> &b) {
   int col = 5;
-  for (int row = 17; row >= 3; row--) {
-    if (canPlace(row, col, b)) {
+  for (int row = 3; row < 18; row++) {
+    if (!canPlace(row, col, b)) {
+      --row;
       setPiece(row, col, b);
       break;
     }
