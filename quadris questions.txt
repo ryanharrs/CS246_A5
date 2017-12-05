@@ -1,0 +1,58 @@
+1. Similarly to the answer for DD1, we would add a bool value to the Block class, but to 
+ensure encapsulation, it would be private and we would create a public method to get the
+value of the bool ( the bool being set when the block is initialized). Then, instead of
+what we originally proposed of keeping a vector of recently placed block pointers, we think
+it would be better to add a field in the block class that keeps track of how many blocks
+have been placed since this block has been placed. Since the board's cells have pointers
+to the block it owns, each time a block is dropped, all the other cell's can tell their
+blocks a new blocks been placed and to increment the value that keeps track of how many
+blocks have been placed since by one. This way, everytime a block's placed, we can just go
+through all the cells and check if each block is a gnerating block and then if blocks have 
+been placed, to clear the generating block.
+
+
+2. We think that our original answer is not very efficient nor effective. Having the variables 
+codes into main and keeping track of them in main is quite messy. We think that in the future
+it would be better to create a level class that main accesses, and the level class would have
+variables and functions that would help implement the different levels. This would make
+introducing addition levels into the system much easier since we could do the implementation
+in the level class, and main would only have to deal with calling and checking values in the 
+level class and/or using the level class methods. Keeping all the additional methods and variables
+out of main and more accessible in the level class. 
+
+
+3. We believe that a similar answer to our original answer would be a good solution. By simply
+having a vector of vectors of strings which are acceptable commands would organize the
+commands well. Each vector of strings would be different command nicknames, and each vector
+of vectors would represent a different command. This way, when you wanted to rename/add a new 
+name to an exsiting command, you can go into the corresponding vector of strings and either
+emplace back or edit a string in the vector. Then, when if you wanted to add a new command,
+you can simply add the name of the command as a string to a vector then add that vector to
+the vector of vectors. Then when main gets a command, it can look through the vector of 
+vectors pretty easily to find the correclty associated command. 
+
+
+Intro: Building this game of Quadris from scratch was no small task. Through lots of hours of 
+coding, much trail and error, and lots of debugging, the three of us came together to build a 
+program we can all be proud of. With great teamwork, lots of individual effort, and a drive to
+build something start to finish, we have managed to peice together a fully functional game of
+Quadris.
+
+
+Conclusion: All in all, it was a quite enjoyable experience for all of us. This project really
+taught us all a lot about building a product from start to finish, and not just by yourself, but
+as a team. We learned to play off each other's strengths and to specialize what we were good at
+to work effieciently and effectively in completing the project. 
+
+
+
+
+
+
+
+
+
+
+
+
+
