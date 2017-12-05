@@ -1,0 +1,1 @@
+We implemented smart pointers in all our classes.
