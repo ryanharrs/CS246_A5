@@ -86,7 +86,7 @@ shared_ptr<Block> getblock(string block, int level, bool random){
 bool dropBlock(int &curr_row, int &curr_col, shared_ptr<Block> &block, Board &board) {
   board.clearPiece(curr_row, curr_col, block);
   while (board.canPlace(curr_row, curr_col, block)) ++curr_row;
-  --curr_row;
+    --curr_row;
   board.setPiece(curr_row, curr_col, block);
   return board.clearRows();
 }
@@ -192,6 +192,11 @@ if (startlevel != true){
         first = 0;
         curr_row = 0;
         curr_col = 0;
+        if (cmd == "drop" && counter > 0) {
+          --counter; 
+        } else {
+          counter = 0;
+        }
         clearedRow = false;
         blockMove = false;
         blockDrop = false;
@@ -209,7 +214,7 @@ if (startlevel != true){
         }
         if (done>1){
           next = getblock(str, level, random);
-    gameBoard.updateGdNextBlock(next);
+          gameBoard.updateGdNextBlock(next);
         }
         hintBlock = make_shared<Block>(b->getCell(0).type, level, true);
         hintInfo = gameBoard.hint(hintBlock);
@@ -222,11 +227,41 @@ if (startlevel != true){
             printBlock(next->getCell(0).type);
           } else { cout << endl << endl;}
         } else {
-          cout << "You Lose" << endl;
-          break;
+          counter = 0;
+          cout << "You Lose!" << endl;
+          hiScore = gameBoard.getHS();
+          gameBoard.init(level, hiScore, showGraphics);
+          string str;
+          ifstream f {scriptfile};
+          string tt;
+          cmds2.clear();
+          while(f>>tt){
+            cmds2.insert(cmds2.begin(), tt);
+          }
+          if ((level==0)||(random==0)){
+            if (!cmds2.empty()){
+              str = cmds2.back();
+              cmds2.pop_back();
+            } else {
+              cout << "No more commands" << endl;
+              done--;
+            }
+          } else {
+            str = "";
+          }
+          b = getblock(str, level, random);
+          // printing the block
+          gameBoard.setPiece(curr_row, curr_col, b);
+          cout << gameBoard << endl;
+          cout << "Next: " << endl;
+          if (done>1) {
+            printBlock(next->getCell(0).type);
+            gameBoard.updateGdNextBlock(next);
+          } else { cout << endl << endl;}
         }
       }
       newblock = 0;
+      if (cmd != "drop") counter = 0;
       //Figuring out which command was entered
       if (counter==0&&cmds3.size()==0){
         cout << "Enter a command: ";
@@ -235,30 +270,36 @@ if (startlevel != true){
         int tempint;
         istringstream iss(tempstr);
         if (iss >> tempint){
-          counter = tempint-1;
-          cmd = cmd.substr(tempint/10 + 1, cmd.length()-1);
+          if(tempint == 0) continue;
+          counter = tempint;
+          string tempStr = to_string(tempint);
+          cmd = cmd.substr(tempStr.length(), cmd.length()-1);
             if (cmd=="restart"||cmd=="hint"||cmd=="norandom"||cmd=="hint"){
-              counter = 0;
+              counter = 1;
             }
+          } else {
+            counter = 1;
           }
         cmd = commandFinder(cmd);
-      } else if (cmds3.size()!=0&&counter==0){
-        cmd = cmds3.back();
-        cmds3.pop_back();
+      } else if (counter==0&&cmds3.size()!=0){
+          cmd = cmds3.back();
+          cmds3.pop_back();
           string tempstr = cmd;
           int tempint;
           istringstream iss(tempstr);
           if (iss >> tempint){
-              counter = tempint-1;
-              cmd = cmd.substr(tempint/10 + 1, cmd.length()-1);
-              if (cmd=="restart"||cmd=="hint"||cmd=="norandom"||cmd=="hint"){
-                  counter = 0;
+              if (tempint == 0) continue;
+              counter = tempint;
+              string tempStr = to_string(tempint);
+              cmd = cmd.substr(tempStr.length(), cmd.length()-1);
+              if (cmd=="restart"||cmd=="hint"||cmd=="norandom"||cmd=="hint") {
+                  counter = 1;
               }
+          } else {
+            counter = 1;
           }
         cmd = commandFinder(cmd);
-      } else {
-         counter --;
-      }
+      } 
       //Commands that don't need a block
       if (cmd=="restart"){
         hiScore = gameBoard.getHS();
@@ -288,33 +329,38 @@ if (startlevel != true){
           cout << "Next: " << endl;
           if (done>1) {
             printBlock(next->getCell(0).type);
+            gameBoard.updateGdNextBlock(next);
           } else { cout << endl << endl;}
       } else if (cmd == "levelup"){
-        if (level!=4){
-          level++;
-          isHeavy = false;
-          construct = false;
-          if (level == 3) isHeavy = true;
-          if (level == 4) {
-            isHeavy = true;
-            construct = true;
+        while (counter > 0) {
+          if (level!=4){
+            level++;
+            isHeavy = false;
+            construct = false;
+            if (level == 3) isHeavy = true;
+            if (level == 4) {
+              isHeavy = true;
+              construct = true;
+            }
+          } else {
+              break;
           }
-        } else {
-            cout << "You're on the highest level!" << endl;
         }
         gameBoard.setLevel(level);
       } else if (cmd == "leveldown"){
-        if (level!=0){
-          --level;
-          isHeavy = false;
-          construct = false;
-          if (level == 3) isHeavy = true;
-          if (level == 4) {
-            isHeavy = true;
-            construct = true;
+        while (counter > 0) {
+          if (level!=0){
+            --level;
+            isHeavy = false;
+            construct = false;
+            if (level == 3) isHeavy = true;
+            if (level == 4) {
+              isHeavy = true;
+              construct = true;
+            }
+          } else {
+              break;
           }
-        } else {
-            cout << "You're on the lowest level!" << endl;
         }
         gameBoard.setLevel(level);
       } else if (cmd == "norandom"){
@@ -336,52 +382,57 @@ if (startlevel != true){
         }
       } else  if (cmd == "left") {
         gameBoard.clearPiece(curr_row, curr_col, b);
-        --curr_col;
-        if (gameBoard.canPlace(curr_row, curr_col, b)) {
-          gameBoard.setPiece(curr_row, curr_col, b);
-        } else {
-          ++curr_col;
-          gameBoard.setPiece(curr_row, curr_col, b);
+        while (counter > 0) {
+          --curr_col;
+          if (!gameBoard.canPlace(curr_row, curr_col, b)) {
+            ++curr_col;
+            break;
+          }
+          --counter;
         }
         blockMove = true;
       } else if (cmd == "right"){
         gameBoard.clearPiece(curr_row, curr_col, b);
-        ++curr_col;
-        if (gameBoard.canPlace(curr_row, curr_col, b)) {
-          gameBoard.setPiece(curr_row, curr_col, b);
-        } else {
-          --curr_col;
-          gameBoard.setPiece(curr_row, curr_col, b);
+        while (counter > 0) {
+          ++curr_col;
+          if (!gameBoard.canPlace(curr_row, curr_col, b)) {
+            --curr_col;
+            break;
+          }
+          --counter;
         }
         blockMove = true;
       } else if (cmd == "down"){
         gameBoard.clearPiece(curr_row, curr_col, b);
-        ++curr_row;
-        if (gameBoard.canPlace(curr_row, curr_col, b)) {
-          gameBoard.setPiece(curr_row, curr_col, b);
-        } else {
-          --curr_row;
-          gameBoard.setPiece(curr_row, curr_col, b);
+        while (counter > 0) {
+          ++curr_row;
+          if (!gameBoard.canPlace(curr_row, curr_col, b)) {
+            --curr_row;
+            break;
+          }
+          --counter;
         }
         blockMove = true;
       } else if (cmd == "clockwise"){
         gameBoard.clearPiece(curr_row, curr_col, b);
-        b->clockwise();
-        if (gameBoard.canPlace(curr_row, curr_col, b)) {
-          gameBoard.setPiece(curr_row, curr_col, b);
-       } else {
-          b->counter_clockwise();
-          gameBoard.setPiece(curr_row, curr_col, b);
+        while (counter > 0) {
+          b->clockwise();
+          if (!gameBoard.canPlace(curr_row, curr_col, b)) {
+            b->counter_clockwise();
+            break;
+          }
+          --counter;
         }
         blockMove = true;
       } else if (cmd == "counterclockwise"){
         gameBoard.clearPiece(curr_row, curr_col, b);
-        b->counter_clockwise();
-        if (gameBoard.canPlace(curr_row, curr_col, b)) {
-          gameBoard.setPiece(curr_row, curr_col, b);
-        } else {
-          b->clockwise();
-          gameBoard.setPiece(curr_row, curr_col, b);
+        while (counter > 0) {
+          b->counter_clockwise();
+          if (!gameBoard.canPlace(curr_row, curr_col, b)) {
+            b->clockwise();
+            break;
+          }
+          --counter;
         }
         blockMove = true;
       } else if (cmd == "drop"){
@@ -391,7 +442,6 @@ if (startlevel != true){
         hintPlaced = false;
         clearedRow = dropBlock(curr_row, curr_col, b, gameBoard);
         newblock = 1;
-        blockMove = true;
         blockDrop = true;
       } else if (cmd=="I"||cmd=="J"||cmd=="L"||cmd=="S"||cmd=="Z"||cmd=="T"||cmd=="O"){
         char prevType = b->getType();
@@ -410,9 +460,7 @@ if (startlevel != true){
       if (isHeavy && blockMove) {
         gameBoard.clearPiece(curr_row, curr_col, b);
         ++curr_row;
-        if (gameBoard.canPlace(curr_row, curr_col, b)) {
-          gameBoard.setPiece(curr_row, curr_col, b);
-        } else {
+        if (!gameBoard.canPlace(curr_row, curr_col, b)) {
           if(hintPlaced == true){
             gameBoard.clearPiece(hintInfo.row, hintInfo.col, hintBlock);
           }
@@ -423,6 +471,7 @@ if (startlevel != true){
           blockDrop = true;
         }
       }
+      if (blockMove) gameBoard.setPiece(curr_row, curr_col, b);
       if (construct && blockDrop) {
         if (clearedRow) {
           noClear = 0;
@@ -443,6 +492,7 @@ if (startlevel != true){
         cout << "Next: " << endl;
         printBlock(next->getCell(0).type);
       }
+      blockMove = false;
       if (done==0) break;
     }
   } catch (ios::failure &) {}  // Any I/O failure quits 
