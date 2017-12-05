@@ -133,7 +133,7 @@ int main(int argc, char *argv[]) {
 
   string scriptfile = argv[argc-1];
   //Figuring out which cmd line args were entered
-  for (int i = 1; i<argc-1; i++){
+  for (int i = 1; i<argc; i++){
         string s = argv[i];
         if(s == "-text"){showGraphics = false;
         } else if (s=="-seed"){ 
@@ -252,12 +252,9 @@ if (startlevel != true){
           b = getblock(str, level, random);
           // printing the block
           gameBoard.setPiece(curr_row, curr_col, b);
-          cout << gameBoard << endl;
-          cout << "Next: " << endl;
           if (done>1) {
-            printBlock(next->getCell(0).type);
             gameBoard.updateGdNextBlock(next);
-          } else { cout << endl << endl;}
+          } 
         }
       }
       newblock = 0;
@@ -325,12 +322,9 @@ if (startlevel != true){
           b = getblock(str, level, random);
   // printing the block
           gameBoard.setPiece(curr_row, curr_col, b);
-          cout << gameBoard << endl;
-          cout << "Next: " << endl;
           if (done>1) {
-            printBlock(next->getCell(0).type);
             gameBoard.updateGdNextBlock(next);
-          } else { cout << endl << endl;}
+          }
       } else if (cmd == "levelup"){
         while (counter > 0) {
           if (level!=4){
@@ -342,6 +336,7 @@ if (startlevel != true){
               isHeavy = true;
               construct = true;
             }
+            --counter;
           } else {
               break;
           }
@@ -358,6 +353,7 @@ if (startlevel != true){
               isHeavy = true;
               construct = true;
             }
+            --counter;
           } else {
               break;
           }

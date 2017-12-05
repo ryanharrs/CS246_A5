@@ -58,7 +58,7 @@ void GraphicsDisplay::updateNextBlock(shared_ptr<Block> &b){
   int cellHeight = 30;
   int a = widthSize - sidePanelWidth + 20;
   int r = 15;
-  xw.clearArea(a - 20, cellHeight * 3, 100,100);
+  xw.clearArea(a - 20, cellHeight * 3, 150,150);
   for(int idx = 0; idx < 4; idx++){
     auto info = b->getCell(idx);
     string type = to_string(b->getType());
